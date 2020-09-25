@@ -1,6 +1,6 @@
 # volga
 
-**volga is a framework for *de*serealizing Python data structures.**
+**volga is a framework for *de*serializing Python data structures.**
 
 ---
 
