@@ -7,7 +7,7 @@ setuptools.setup(
     name="volga",
     version="0.0.1",
     author="Yefri Gaitan <yg2548@columbia.edu>, Ecenaz Jen Ozmen <eo2419@columbia.edu>",
-    description="A python framework for deserealization",
+    description="Serialization framework for Python",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/yefrig/coms4995-volga",
