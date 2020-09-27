@@ -1,6 +1,6 @@
 # volga
 
-![python](https://img.shields.io/badge/python-3.8-green)
+![python](https://img.shields.io/badge/python-3.8-green)![version](https://img.shields.io/badge/version-v0-orange)
 
 **volga is a framework for *de*serializing Python data structures.**
 
