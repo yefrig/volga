@@ -42,6 +42,18 @@ Example:
   deserealized = volga-json.from_string(json_string)
 ```
 
+## The volga Data Model
+The data model serves as an API for data formats and your python objects to interact.
+
+volga v0.1.0 supports the following types:
+- dict
+- list
+- int
+- float
+- boolean
+- None
+
+
 ## Team Members
 
 - Yefri Gaitan [@yefrig](https://github.com/yefrig)
