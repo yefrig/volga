@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "volga"
+version = "0.1.2"
+description = "A python framework for deserialization"
+authors = ["Yefri Gaitan <yefrigaitan@gmail.com>", "Ecenaz Jen Ozmen <eo2419@columbia.edu>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/yefrig/volga"
+keywords = ["python", "serialize", "deserialize"]
+classifiers = [
+        "Development Status :: 1 - Planning",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3.8",
+        "Operating System :: OS Independent",
+        "Typing :: Typed",
+]
+exclude = [".gitignore"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
