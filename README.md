@@ -39,7 +39,7 @@ Example:
   
   # ...
   
-  deserealized = volga-json.from_string(json_string)
+  deserealized: User = volga-json.from_string(json_string)
 ```
 
 ## The volga Data Model
