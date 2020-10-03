@@ -1,32 +1,5 @@
 from abc import abstractmethod
-from typing import Protocol, TypeVar
-
-_T = TypeVar("_T")
-
-
-class SerializeSeq(Protocol[_T]):
-    @abstractmethod
-    def __serialize_element__(self, value: _T) -> None:
-        ...
-
-    @abstractmethod
-    def __end__(self) -> None:
-        ...
-
-
-_K = TypeVar("_K")
-_V = TypeVar("_V")
-
-
-# TODO: rename to map and update data model
-class SerializeDict(Protocol[_T]):
-    @abstractmethod
-    def __serialize_entry__(self, k: _K, v: _V) -> None:
-        ...
-
-    @abstractmethod
-    def __end__(self) -> None:
-        ...
+from typing import Protocol, TypeVar, Generator, Mapping
 
 
 class Serializer(Protocol):
@@ -42,12 +15,17 @@ class Serializer(Protocol):
     def __serialize_float__(self, value: float) -> None:
         ...
 
-    @abstractmethod
-    def __serialize_list__(self) -> SerializeSeq:
-        ...
+    _T = TypeVar('_T')
 
     @abstractmethod
-    def __serialize_dict__(self) -> SerializeDict:
+    def __serialize_seq__(self, seq: Generator[_T, None, None]) -> None:
+        ...
+
+    _K = TypeVar('_K')
+    _V = TypeVar('_V')
+
+    @abstractmethod
+    def __serialize_map__(self, map: Mapping[_K, _V]) -> None:
         ...
 
     @abstractmethod

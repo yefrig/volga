@@ -1,29 +1,29 @@
 from abc import abstractmethod
 from typing import Protocol
-from .visitor import VisitorResult
+from .visitor import Visitor, VisitorResult
 
 
 class Deserializer(Protocol):
     @abstractmethod
-    def __deserialize_bool__(self, visitor: bool) -> VisitorResult:
+    def __deserialize_bool__(self, visitor: Visitor) -> VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_int__(self, value: int) -> VisitorResult:
+    def __deserialize_int__(self, visitor: Visitor) -> VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_float__(self, value: float) -> VisitorResult:
+    def __deserialize_float__(self, visitor: Visitor) -> VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_list__(self) -> VisitorResult:
+    def __deserialize_seq__(self, visitor: Visitor) -> VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_dict__(self) -> VisitorResult:
+    def __deserialize_map__(self, visitor: Visitor) -> VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_none__(self) -> VisitorResult:
+    def __deserialize_none__(self, visitor: Visitor) -> VisitorResult:
         ...

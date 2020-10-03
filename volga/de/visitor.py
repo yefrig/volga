@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import TypeVar, Protocol
+from typing import TypeVar, Protocol, Mapping, Generator
 
 VisitorResult = TypeVar("VisitorResult")
 
@@ -17,12 +17,17 @@ class Visitor(Protocol):
     def __visit_float__(self, value: float) -> VisitorResult:
         ...
 
-    @abstractmethod
-    def __visit_list__(self) -> VisitorResult:
-        ...
+    _T = TypeVar('_T')
 
     @abstractmethod
-    def __visit_dict__(self) -> VisitorResult:
+    def __visit_seq__(self, seq: Generator[_T, None, None]) -> VisitorResult:
+        ...
+
+    _K = TypeVar('_K')
+    _V = TypeVar('_V')
+
+    @abstractmethod
+    def __visit_map__(self, map: Mapping[_K, _V]) -> VisitorResult:
         ...
 
     @abstractmethod
