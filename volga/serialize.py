@@ -1,5 +1,5 @@
 from typing import Protocol
-from volga import Serializer
+from serializer import Serializer
 from abc import abstractmethod
 
 class Serialize(Protocol):

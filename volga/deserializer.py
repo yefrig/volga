@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from typing import Protocol
-from volga import Visitor, VisitorResult
+from visitor import Visitor, VisitorResult
 
 class Deserializer(Protocol):
     @abstractmethod
