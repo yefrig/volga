@@ -20,6 +20,7 @@
 
 
 
+## What is it?
 
 **volga is a framework for *de*serializing Python data structures.**
 
@@ -29,23 +30,30 @@ volga will allow you to *flow* your data into any format that you'd like.
 
 Example:
 ```python3
-  import volga-json
+  import attr
+  from volga import json
   
-  @Deserealize
+  # auto generated methods that conform to Serialize and Deserialize protocols
+  @Serialize
+  @Deserialize
+  @attr.s(auto_attribs=True)
   def class User():
-    name: Annotated<str, volga-json.exclude('yefri')>
+    name: str
     age: int
+    
+  user: User = User('john', 43)
   
+  serialized: str = json.to_string(user)
+  print(serialized) # prints {"name":"john","age":43}
   
-  # ...
-  
-  deserealized: User = volga-json.from_string(json_string)
+  deserialized: User = json.from_string(serialized)
+  print(deserialized) # prints User(name='john', age=43)
 ```
 
 ## The volga Data Model
 The data model serves as an API for data formats and your python objects to interact.
 
-volga v0.1.0 supports the following types:
+volga v0.2.0 supports the following types:
 - dict
 - list
 - int
@@ -53,7 +61,6 @@ volga v0.1.0 supports the following types:
 - boolean
 - str
 - None
-
 
 ## Team Members
 
