@@ -37,7 +37,7 @@ Example:
   @Serialize
   @Deserialize
   @attr.s(auto_attribs=True)
-  def class User():
+  class User():
     name: str
     age: int
     
