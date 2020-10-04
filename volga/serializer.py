@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Protocol, TypeVar, Generator, Mapping
+from typing import Protocol, TypeVar, Sequence, Mapping
 
 
 class Serializer(Protocol):
@@ -22,7 +22,7 @@ class Serializer(Protocol):
     _T = TypeVar('_T')
 
     @abstractmethod
-    def __serialize_seq__(self, seq: Generator[_T, None, None]) -> None:
+    def __serialize_seq__(self, seq: Sequence[_T]) -> None:
         ...
 
     _K = TypeVar('_K')
