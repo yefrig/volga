@@ -51,6 +51,7 @@ volga v0.1.0 supports the following types:
 - int
 - float
 - boolean
+- str
 - None
 
 

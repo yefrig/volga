@@ -15,6 +15,10 @@ class Serializer(Protocol):
     def __serialize_float__(self, value: float) -> None:
         ...
 
+    @abstractmethod
+    def __serialize_str__(self, s: str) -> None:
+        ...
+
     _T = TypeVar('_T')
 
     @abstractmethod

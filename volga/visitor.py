@@ -17,6 +17,10 @@ class Visitor(Protocol):
     def __visit_float__(self, value: float) -> VisitorResult:
         ...
 
+    @abstractmethod
+    def __visit_str__(self, s: str) -> VisitorResult:
+        ...
+
     _T = TypeVar('_T')
 
     @abstractmethod

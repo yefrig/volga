@@ -1,7 +1,6 @@
 from abc import abstractmethod
 from typing import Protocol
-from .visitor import Visitor, VisitorResult
-
+from volga import Visitor, VisitorResult
 
 class Deserializer(Protocol):
     @abstractmethod
@@ -22,6 +21,10 @@ class Deserializer(Protocol):
 
     @abstractmethod
     def __deserialize_map__(self, visitor: Visitor) -> VisitorResult:
+        ...
+
+    @abstractmethod
+    def __deserialize_str__(self, visitor: VisitorResult) -> VisitorResult:
         ...
 
     @abstractmethod
