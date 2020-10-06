@@ -9,7 +9,7 @@ install:
 jobs:
   include:
     - stage: lint
-      script: poetry run flake8 volga tests
-      script: poetry run black --check .
+      script: make lint
+      script: make black
     - stage: test
-      script: poetry run pytest
+      script: make test
