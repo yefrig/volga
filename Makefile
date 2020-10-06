@@ -5,11 +5,11 @@ default: black lint
 test:
 	poetry run pytest
 
-lint: ## check style with flake8
-	flake8 volga tests
-
 black:
-	black .
+	poetry run black --check .
+
+lint:
+	poetry run flake8 volga tests
 
 build:
 	poetry build
