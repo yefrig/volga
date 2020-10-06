@@ -1,5 +1,8 @@
-# volga &emsp; [![license]][license-file] [![release]][releases] [![python-version]][pypi] [![open-issues]][issues] [![last-commit]][commits] ![stars]
+# volga &emsp; [![travis]][build] [![license]][license-file] [![release]][releases] [![python-version]][pypi] [![open-issues]][issues] [![last-commit]][commits] ![stars]
 
+
+[travis]: https://travis-ci.com/yefrig/volga.svg?branch=master
+[build]: https://travis-ci.com/yefrig/volga
 
 [license]: https://img.shields.io/github/license/yefrig/volga
 [license-file]: https://github.com/yefrig/volga/blob/master/LICENSE
