@@ -19,14 +19,14 @@ class Serializer(Protocol):
     def __serialize_str__(self, s: str) -> None:
         ...
 
-    _T = TypeVar('_T')
+    _T = TypeVar("_T")
 
     @abstractmethod
     def __serialize_seq__(self, seq: Sequence[_T]) -> None:
         ...
 
-    _K = TypeVar('_K')
-    _V = TypeVar('_V')
+    _K = TypeVar("_K")
+    _V = TypeVar("_V")
 
     @abstractmethod
     def __serialize_map__(self, map: Mapping[_K, _V]) -> None:

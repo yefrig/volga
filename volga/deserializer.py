@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Protocol
 from visitor import Visitor, VisitorResult
 
+
 class Deserializer(Protocol):
     @abstractmethod
     def __deserialize_bool__(self, visitor: Visitor) -> VisitorResult:
