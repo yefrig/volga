@@ -1,5 +1,7 @@
-# volga &emsp; [![travis]][build] [![license]][license-file] [![release]][releases] [![python-version]][pypi] [![open-issues]][issues] [![last-commit]][commits] ![stars]
+# volga &emsp; [![travis]][build] [![codecov]][codecov-page] [![license]][license-file] [![release]][releases] [![python-version]][pypi] [![open-issues]][issues] [![last-commit]][commits] ![stars]
 
+[codecov]: https://codecov.io/gh/yefrig/volga/branch/master/graph/badge.svg?token=0QW3OTFQD5
+[codecov-page]: https://codecov.io/gh/yefrig/volga
 
 [travis]: https://travis-ci.com/yefrig/volga.svg?branch=master
 [build]: https://travis-ci.com/yefrig/volga
