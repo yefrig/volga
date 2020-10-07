@@ -3,7 +3,7 @@
 default: black lint
 
 test:
-	poetry run pytest
+	poetry run coverage run -m pytest
 
 black:
 	poetry run black --check .
