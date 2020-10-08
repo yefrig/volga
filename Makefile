@@ -1,15 +1,23 @@
 .PHONY: test lint black build publish
 
-default: black lint
+default: lint
 
 test:
 	poetry run coverage run -m pytest
 
+lint: mypy black flake8 pylint
+
+mypy:
+	poetry run mypy --strict volga tests
+
 black:
 	poetry run black --check .
 
-lint:
-	poetry run flake8 volga tests
+flake8:
+	poetry run flake8 volga tests 
+
+pylint:
+	poetry run pylint volga tests
 
 build:
 	poetry build
