@@ -1,16 +1,10 @@
-from typing import Mapping, Sequence, TypeVar
+from typing import Mapping, Sequence
 
-from serialize import Serialize
-from serializer import Serializer
-
-_T = TypeVar("_T", Serialize, bool, float, int, str, list, dict, None)
-
-"""
-    Map each of the volga's data model types to JSON
-"""
+from volga.data import Visitor, VisitorResult, VolgaT
+from volga.format import Format
 
 
-class JSONSerializer(Serializer):
+class JSON(Format):
 
     output: str = ""
 
@@ -32,7 +26,7 @@ class JSONSerializer(Serializer):
         self.output += '"'
         return
 
-    def __serialize_seq__(self, seq: Sequence[_T]) -> None:
+    def __serialize_seq__(self, seq: Sequence[VolgaT]) -> None:
         self.output += "["
 
         for elem in seq:
@@ -40,23 +34,23 @@ class JSONSerializer(Serializer):
             if self.output[-1] != "[":
                 self.output += ","
 
-            _serialize_with_primitives(self, elem)
+            self.serialize(elem)
 
         self.output += "]"
         return
 
-    def __serialize_map__(self, map: Mapping[_T, _T]) -> None:
+    def __serialize_map__(self, map: Mapping[VolgaT, VolgaT]) -> None:
         self.output += "{"
 
         for key in map.keys():
             # serialize key
             if self.output[-1] != "{":
                 self.output += ","
-            _serialize_with_primitives(self, key)
+            self.serialize(key)
 
             # serialize value
             self.output += ":"
-            _serialize_with_primitives(self, map[key])
+            self.serialize(map[key])
 
         self.output += "}"
         return
@@ -65,30 +59,34 @@ class JSONSerializer(Serializer):
         self.output += "null"
         return
 
+    def __deserialize_bool__(self, visitor: Visitor) -> VisitorResult:
+        ...
 
-def to_string(value: _T) -> str:
+    def __deserialize_int__(self, visitor: Visitor) -> VisitorResult:
+        ...
 
-    se = JSONSerializer()
-    _serialize_with_primitives(se, value)
+    def __deserialize_float__(self, visitor: Visitor) -> VisitorResult:
+        ...
 
-    return se.output
+    def __deserialize_seq__(self, visitor: Visitor) -> VisitorResult:
+        ...
+
+    def __deserialize_map__(self, visitor: Visitor) -> VisitorResult:
+        ...
+
+    def __deserialize_str__(self, visitor: VisitorResult) -> VisitorResult:
+        ...
+
+    def __deserialize_none__(self, visitor: Visitor) -> VisitorResult:
+        ...
 
 
-def _serialize_with_primitives(se: Serializer, value: _T) -> None:
+def to_string(value: VolgaT) -> str:
 
-    if isinstance(value, bool):
-        se.__serialize_bool__(value)
-    elif isinstance(value, float):
-        se.__serialize_float__(value)
-    elif isinstance(value, int):
-        se.__serialize_int__(value)
-    elif isinstance(value, list):
-        se.__serialize_seq__(value)
-    elif isinstance(value, dict):
-        se.__serialize_map__(value)
-    elif isinstance(value, str):
-        se.__serialize_str__(value)
-    elif value is None:
-        se.__serialize_none__()
-    else:
-        value.serialize(se)
+    format = JSON()
+    format.serialize(value)
+
+    return format.output
+
+
+print(to_string({1: "a", 2: "b"}))
