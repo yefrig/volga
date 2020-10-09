@@ -5,19 +5,13 @@ default: lint
 test:
 	poetry run coverage run -m pytest
 
-lint: mypy black flake8 pylint
+lint: pyright black
 
-mypy:
-	poetry run mypy --strict volga tests
+pyright:
+	poetry run pyright --verbose
 
 black:
-	poetry run black --check .
-
-flake8:
-	poetry run flake8 volga tests 
-
-pylint:
-	poetry run pylint volga tests
+	poetry run black --check --diff --color .
 
 build:
 	poetry build
