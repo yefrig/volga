@@ -1,8 +1,7 @@
-language: python
+language: node_js
+node_js: 14
 python:
   - "3.8"
-node_js:
-  - 14
 
 before_install:
   - pip install --upgrade pip
@@ -12,6 +11,7 @@ before_install:
 install: 
   - poetry install -v
   - npm -v
+  - node -v
   - npm install -g pyright
 
 jobs:
