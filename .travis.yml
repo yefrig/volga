@@ -1,12 +1,11 @@
 language: python
 python:
   - "3.8"
-node_js:
-  - node
 
 before_install:
   - pip install --upgrade pip
   - pip install poetry
+  - npm i -g npm@latest
 
 install: 
   - poetry install -v
