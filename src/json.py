@@ -1,10 +1,14 @@
-from typing import Mapping, Sequence
+from __future__ import annotations
+from typing import Mapping, Sequence, TYPE_CHECKING
 
-from volga.data import Visitor, VisitorResult, VolgaT
-from volga.format import Format
+from . import format
 
 
-class JSON(Format):
+if TYPE_CHECKING:
+    from . import data
+
+
+class JSON(format.Format):
 
     output: str = ""
 
@@ -26,7 +30,7 @@ class JSON(Format):
         self.output += '"'
         return
 
-    def __serialize_seq__(self, seq: Sequence[VolgaT]) -> None:
+    def __serialize_seq__(self, seq: Sequence[data.VolgaT]) -> None:
         self.output += "["
 
         for elem in seq:
@@ -39,7 +43,7 @@ class JSON(Format):
         self.output += "]"
         return
 
-    def __serialize_map__(self, map: Mapping[VolgaT, VolgaT]) -> None:
+    def __serialize_map__(self, map: Mapping[data.VolgaT, data.VolgaT]) -> None:
         self.output += "{"
 
         for key in map.keys():
@@ -59,34 +63,31 @@ class JSON(Format):
         self.output += "null"
         return
 
-    def __deserialize_bool__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_bool__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
-    def __deserialize_int__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_int__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
-    def __deserialize_float__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_float__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
-    def __deserialize_seq__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_seq__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
-    def __deserialize_map__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_map__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
-    def __deserialize_str__(self, visitor: VisitorResult) -> VisitorResult:
+    def __deserialize_str__(self, visitor: data.VisitorResult) -> data.VisitorResult:
         ...
 
-    def __deserialize_none__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_none__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
 
-def to_string(value: VolgaT) -> str:
+def to_string(value: data.VolgaT) -> str:
 
     format = JSON()
     format.serialize(value)
 
     return format.output
-
-
-print(to_string({1: "a", 2: "b"}))
