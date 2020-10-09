@@ -6,13 +6,14 @@ before_install:
   - pip install --upgrade pip
   - pip install poetry
 
-install: poetry install -v
+install: 
+  - poetry install -v
+  - npm install -g pyright
 
 jobs:
   include:
     - stage: lint
       script: make lint
-      script: make black
     - stage: test
       script: make test
 
