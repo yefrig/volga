@@ -3,7 +3,7 @@
 default: lint
 
 test:
-	poetry run coverage run -m pytest
+	poetry run coverage run -m pytest -v src
 
 lint: pyright black
 

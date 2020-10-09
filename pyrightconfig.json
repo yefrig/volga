@@ -1,12 +1,12 @@
 {
     "include": [
-        "volga"
+        "src"
     ],
     "exclude": [
         "**/node_modules"
     ],
     "strict": [
-        "volga"
+        "src"
     ],
     "venvPath": "./.venv",
     "reportMissingImports": true,
