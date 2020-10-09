@@ -1,0 +1,20 @@
+{
+    "include": [
+        "volga"
+    ],
+    "exclude": [
+        "**/node_modules"
+    ],
+    "strict": [
+        "volga"
+    ],
+    "venvPath": "./.venv",
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": true,
+    "reportUntypedFunctionDecorator": true,
+    "reportUntypedClassDecorator": true,
+    "reportOptionalSubscript": true,
+    "reportOptionalMemberAccess": true,
+    "reportOptionalCall": true,
+    "pythonVersion": "3.8"
+}
