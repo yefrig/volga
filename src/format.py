@@ -4,7 +4,7 @@ from typing import Mapping, Protocol, Sequence, TYPE_CHECKING
 
 
 if TYPE_CHECKING:
-    import data
+    from . import data
 
 
 class canSerialize(Protocol):

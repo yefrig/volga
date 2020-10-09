@@ -1,7 +1,6 @@
 from typing import Mapping, Sequence
 from hypothesis import given
 import hypothesis.strategies as st
-from hypothesis.strategies._internal.core import booleans
 
 from src.json import to_string
 from src.data import VolgaT
