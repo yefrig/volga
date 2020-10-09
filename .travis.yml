@@ -1,7 +1,7 @@
-language: node_js
-node_js: 14
+language: python
 python:
   - "3.8"
+cache: pip
 
 before_install:
   - pip install --upgrade pip
@@ -10,7 +10,7 @@ before_install:
 
 install: 
   - poetry install -v
-  - npm -v
+  - nvm install node
   - node -v
   - npm install -g pyright
 
