@@ -25,7 +25,7 @@ def test_serialize_float(x: float):
 def test_serialize_str(x: str):
     assert to_string(x) == '"' + x + '"'
 
-    
+
 @given(st.none())
 def test_serialize_none(x: None):
     assert to_string(x) == "null"
