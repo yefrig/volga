@@ -1,6 +1,9 @@
 trigger:
 - main
 
+variables:
+  disable.coverage.autogenerate: 'true'
+
 jobs:
 - job: 'Linux'
   pool:
@@ -37,7 +40,7 @@ jobs:
     - script: make test
       displayName: 'Test'
     
-    - script: poetry run coverage xml
+    - script: poetry run coverage xml && poetry run coverage html
       displayName: 'Generating coverage files'
     
     - task: PublishCodeCoverageResults@1
@@ -45,8 +48,9 @@ jobs:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
         reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
-        
+
     - task: PublishTestResults@2
+
       condition: succeededOrFailed()
       inputs:
         testResultsFiles: '**/test-*.xml'
