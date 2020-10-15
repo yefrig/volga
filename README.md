@@ -1,13 +1,13 @@
 # volga &emsp; [![Build Status]][build] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
 
 
-[Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=master
-[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=master
+[Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=main
+[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
 
 
 
 [license]: https://img.shields.io/github/license/yefrig/volga
-[license-file]: https://github.com/yefrig/volga/blob/master/LICENSE
+[license-file]: https://github.com/yefrig/volga/blob/main/LICENSE
 
 [release]: https://img.shields.io/github/v/release/yefrig/volga?include_prereleases&sort=semver
 [releases]: https://github.com/yefrig/volga/releases
