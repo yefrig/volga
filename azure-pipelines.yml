@@ -1,9 +1,6 @@
 trigger:
 - main
 
-variables:
-  disable.coverage.autogenerate: 'true'
-
 jobs:
 - job: 'Linux'
   pool:
@@ -47,7 +44,6 @@ jobs:
       inputs:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
     - task: PublishTestResults@2
 
