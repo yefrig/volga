@@ -1,0 +1,24 @@
+language: python
+python:
+  - "3.8"
+cache: pip
+
+before_install:
+  - pip install --upgrade pip
+  - pip install poetry
+  - npm i -g npm@latest
+
+install: 
+  - poetry install -v
+  - nvm install node
+  - node -v
+  - npm install -g pyright
+
+jobs:
+  include:
+    - stage: lint
+      script: make lint
+    - stage: test
+      script: make test
+
+after_success: codecov

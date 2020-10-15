@@ -1,10 +1,10 @@
-# volga &emsp; [![Build Status]][build] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
+# volga &emsp; [![travis]][build] [![codecov]][codecov-page] [![license]][license-file] [![release]][releases] [![python-version]][pypi] [![open-issues]][issues] ![stars]
 
+[codecov]: https://codecov.io/gh/yefrig/volga/branch/master/graph/badge.svg?token=0QW3OTFQD5
+[codecov-page]: https://codecov.io/gh/yefrig/volga
 
-[Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=master
-[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=master
-
-
+[travis]: https://travis-ci.com/yefrig/volga.svg?branch=master
+[build]: https://travis-ci.com/yefrig/volga
 
 [license]: https://img.shields.io/github/license/yefrig/volga
 [license-file]: https://github.com/yefrig/volga/blob/master/LICENSE
@@ -14,6 +14,11 @@
 
 [python-version]: https://img.shields.io/pypi/pyversions/volga
 [pypi]: https://pypi.org/project/volga/
+
+[open-issues]: https://img.shields.io/github/issues/yefrig/volga
+[issues]: https://github.com/yefrig/volga/issues
+
+[stars]: https://img.shields.io/github/stars/yefrig/volga?style=social
 
 
 
