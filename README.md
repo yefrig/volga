@@ -1,9 +1,9 @@
-# volga &emsp; [![Build Status]][build] [![Azure DevOps coverage]][Azure coverage url] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
+# volga: flexible object deserialization
 
+[![Build Status]][build] [![Azure DevOps coverage]][Azure coverage url] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
 
 [Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=main
 [build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
-
 
 [Azure DevOps coverage]: https://img.shields.io/azure-devops/coverage/yefrigaitan/volga/1
 [Azure coverage url]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
@@ -17,52 +17,52 @@
 [python-version]: https://img.shields.io/pypi/pyversions/volga
 [pypi]: https://pypi.org/project/volga/
 
-
-
 ## What is it?
+**volga** provides fast, extensible, and expressive APIs
+to deserialize any python data structure from any supported data format
+(such as JSON and YAML). Volga allows full customization of the deserialization 
+behavior of your data structures resulting in schema-tized, validated, type-checked 
+objects.
 
-**volga is a framework for *de*serializing Python data structures.**
-
----
-
-volga will allow you to *flow* your data into any format that you'd like.
-
-Example:
 ```python3
-  import attr
-  from volga import json
+  from typing import Annotated
+  import volga
   
-  # auto generated methods that conform to Serialize and Deserialize protocols
-  @Serialize
-  @Deserialize
-  @attr.s(auto_attribs=True)
-  class User():
-    name: str
-    age: int
-    
-  user: User = User('john', 43)
+  class User(volga.Schema):
+      name: volga.Str()
+      # add validators using variable annotations
+      age: Annotated[volga.Int(), volga.Range(0, 150)]
+      location: Annotated[volga.Str(), volga.OneOf(["home", "work"])]
+ 
+   
+  json_data: str = "{'name':'bob','age':'20','location':'home'}"
   
-  serialized: str = json.to_string(user)
-  print(serialized) # prints {"name":"john","age":43}
+  user_schema = User()
+  user: User = volga.json.from_str(json_data, user_schema)
   
-  deserialized: User = json.from_string(serialized)
-  print(deserialized) # prints User(name='john', age=43)
+  print(user) # prints object User(name='bob', age=20, location='home')
 ```
 
-## The volga Data Model
-The data model serves as an API for data formats and your python objects to interact.
+## Main Features
 
-volga v0.2.0 supports the following types:
-- dict
-- list
-- int
-- float
-- boolean
-- str
-- None
 
-## Team Members
+## Documentation
+
+Full documentation will soon be available.
+
+## Where to get it
+The source code is currently hosted on GitHub at:
+https://github.com/yefrig/volga
+
+Binary installers for the latest released version are available at the [Python
+package index](https://pypi.org/project/volga).
+
+```sh
+pip install volga
+```
+
+## Main Contributors
 
 - Yefri Gaitan [@yefrig](https://github.com/yefrig)
 
- - Ecenaz (Jen) Ozmen [@eozmen410](https://github.com/eozmen410)
+- Ecenaz (Jen) Ozmen [@eozmen410](https://github.com/eozmen410)
