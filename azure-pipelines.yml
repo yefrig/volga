@@ -37,7 +37,7 @@ jobs:
     - script: make test
       displayName: 'Test'
     
-    - script: poetry run coverage html && poetry run coverage xml
+    - script: poetry run coverage xml
       displayName: 'Generating coverage files'
     
     - task: PublishCodeCoverageResults@1
@@ -45,4 +45,9 @@ jobs:
         codeCoverageTool: Cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
         reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
-
+        
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: '**/test-*.xml'
+        testRunTitle: 'Publish test results for Python $(python.version)'
