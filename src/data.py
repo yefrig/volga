@@ -1,6 +1,12 @@
+from __future__ import annotations
+
 from abc import abstractmethod
-from typing import Sequence, Mapping, Protocol, TypeVar, Union
-from volga.format import Format
+from typing import Sequence, Mapping, Protocol, TYPE_CHECKING, TypeVar, Union
+
+
+if TYPE_CHECKING:
+    from . import format
+
 
 VisitorResult = TypeVar("VisitorResult")
 
@@ -22,7 +28,7 @@ class supportsDeserialization(Protocol):
 
 class supportsSerialization(Protocol):
     @abstractmethod
-    def serialize(self, format: Format) -> None:
+    def serialize(self, format: format.Format) -> None:
         ...
 
 

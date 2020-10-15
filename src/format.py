@@ -1,7 +1,10 @@
-from typing import Mapping, Protocol, Sequence
+from __future__ import annotations
 from abc import abstractmethod
-from volga.data import Visitor
-from volga.data import VisitorResult, VolgaT
+from typing import Mapping, Protocol, Sequence, TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from . import data
 
 
 class canSerialize(Protocol):
@@ -22,11 +25,11 @@ class canSerialize(Protocol):
         ...
 
     @abstractmethod
-    def __serialize_seq__(self, seq: Sequence[VolgaT]) -> None:
+    def __serialize_seq__(self, seq: Sequence[data.VolgaT]) -> None:
         ...
 
     @abstractmethod
-    def __serialize_map__(self, map: Mapping[VolgaT, VolgaT]) -> None:
+    def __serialize_map__(self, map: Mapping[data.VolgaT, data.VolgaT]) -> None:
         ...
 
     @abstractmethod
@@ -36,31 +39,31 @@ class canSerialize(Protocol):
 
 class canDeserialize(Protocol):
     @abstractmethod
-    def __deserialize_bool__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_bool__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_int__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_int__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_float__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_float__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_seq__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_seq__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_map__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_map__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_str__(self, visitor: VisitorResult) -> VisitorResult:
+    def __deserialize_str__(self, visitor: data.VisitorResult) -> data.VisitorResult:
         ...
 
     @abstractmethod
-    def __deserialize_none__(self, visitor: Visitor) -> VisitorResult:
+    def __deserialize_none__(self, visitor: data.Visitor) -> data.VisitorResult:
         ...
 
 
@@ -71,7 +74,7 @@ class Format(canSerialize, canDeserialize, Protocol):
     """
 
     # method to bypass primitives before calling serialize on value
-    def serialize(self, value: VolgaT) -> None:
+    def serialize(self, value: data.VolgaT) -> None:
         if isinstance(value, bool):
             self.__serialize_bool__(value)
         elif isinstance(value, float):
