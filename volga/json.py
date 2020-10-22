@@ -26,21 +26,61 @@ class JSON(Format):
     """
 
     def __init__(self, input: str) -> None:
+        """[summary]
+
+        :param input: [description]
+        :type input: str
+        """
         self.input: Deque[str] = deque(input)
 
     def __deserialize_bool__(self, expected: Field) -> bool:
+        """[summary]
+
+        :param expected: [description]
+        :type expected: Field
+        :return: [description]
+        :rtype: bool
+        """
         ...
 
     def __deserialize_int__(self, expected: Field) -> int:
+        """[summary]
+
+        :param expected: [description]
+        :type expected: Field
+        :return: [description]
+        :rtype: int
+        """
         ...
 
     def __deserialize_float__(self, expected: Field) -> float:
+        """[summary]
+
+        :param expected: [description]
+        :type expected: Field
+        :return: [description]
+        :rtype: float
+        """
         ...
 
     def __deserialize_str__(self, expected: Field) -> str:
+        """[summary]
+
+        :param expected: [description]
+        :type expected: Field
+        :return: [description]
+        :rtype: str
+        """
         ...
 
     def __deserialize_none__(self, expected: Field) -> Type[None]:
+        """[summary]
+
+        :param expected: [description]
+        :type expected: Field
+        :return: [description]
+        :rtype: Type[None]
+        """
         ...
 
 
