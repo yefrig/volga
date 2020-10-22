@@ -140,3 +140,6 @@ cython_debug/
 # PyCharm files
 .idea/
 .vscode/
+
+# Junit
+junit/
