@@ -18,6 +18,13 @@ NUMBER_RE = re.compile(
 
 
 class JSON(Format):
+    """The class that implements the methods to serialize and deserialize JSONs.
+
+    :param Format: A protocol that defines the methods data formats should support
+        if they want to interact with volga's Field types.
+    :type Format: [type]
+    """
+
     def __init__(self, input: str) -> None:
         self.input: Deque[str] = deque(input)
 

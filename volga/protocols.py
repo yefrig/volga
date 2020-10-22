@@ -11,7 +11,10 @@ RT = TypeVar("RT")
 
 class supportsDeserialization(Protocol):
     """This protocol defines methods to be implemented by data fields
-    or data formats to be able to be deserialized to and from.
+    or data formats so they can be deserialized to and from.
+
+    :param Protocol: [description]
+    :type Protocol: [type]
     """
 
     def deserialize(self, format: Format) -> RT:
