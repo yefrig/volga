@@ -30,4 +30,7 @@ to deserialize any python data structure from any supported data format
 behavior of your data structures resulting in schema-tized, validated, type-checked 
 objects.
 
-This documentation is not complete yet. Full documentation will be available soon.
+```eval_rst
+.. note::
+    This documentation is not complete yet. Full documentation will be available soon.
+```
