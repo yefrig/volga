@@ -57,3 +57,15 @@ import sphinx_rtd_theme
 
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+extensions = ["recommonmark"]
+source_suffix = [".rst", ",md"]
+
+# might be helpful to automate documentation down the line
+# from recommonmark.transform import AutoStructify
+
+# def setup(app):
+#     app.add_config_value('recommonmark_config', {
+#         'auto_toc_tree_section': 'Contents',
+#     }, True)
+#     app.add_transform(AutoStructify)
