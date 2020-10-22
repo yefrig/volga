@@ -10,7 +10,13 @@ class Schema(supportsDeserialization):
     """
 
     def __init__(self) -> None:
+        """[summary]"""
         ...
 
     def __deserialize__(self, format: Format) -> None:
+        """[summary]
+
+        :param format: [description]
+        :type format: Format
+        """
         return
