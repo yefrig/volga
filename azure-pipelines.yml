@@ -1,5 +1,7 @@
 trigger:
-- main
+  branches:
+    include:
+    - '*'
 
 steps:
   - task: UsePythonVersion@0
