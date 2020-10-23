@@ -25,22 +25,18 @@ behavior of your data structures resulting in schema-tized, validated, type-chec
 objects.
 
 ```python3
-  from typing import Annotated
-  import volga
+import volga
+
+# Define your model
+class User(volga.Schema):
+    name: volga.fields.Str()
+    age: volga.fields.Int()
   
-  class User(volga.Schema):
-      name: volga.Str()
-      # add validators using variable annotations
-      age: Annotated[volga.Int(), volga.Range(0, 150)]
-      location: Annotated[volga.Str(), volga.OneOf(["home", "work"])]
- 
-   
-  json_data: str = "{'name':'bob','age':'20','location':'home'}"
-  
-  user_schema = User()
-  user: User = volga.json.from_str(json_data, user_schema)
-  
-  print(user) # prints object User(name='bob', age=20, location='home')
+json_data = '{"name":"bob","age":20}'
+
+user: User = volga.json.from_str(json_data, User)
+
+print(user) # prints object User(name='bob', age=20)
 ```
 
 ## Main Features
