@@ -9,44 +9,56 @@ if TYPE_CHECKING:
 
 
 class Field(supportsDeserialization):
+    """
+    Provides methods for a data format to construct this
+    field from any of the supported volga data types.
+    """
+
     ...
 
 
 class Bool(Field):
-    def deserialize(self, format: Format) -> bool:
+    def __deserialize__(self, format: Format) -> bool:
+        # hint data format to
         return format.__deserialize_bool__(self)
 
     def __deserialize_bool__(self, b: bool) -> bool:
-        ...
+        return bool(b)
 
 
 class Int(Field):
-    def deserialize(self, format: Format) -> int:
+    def __deserialize__(self, format: Format) -> int:
         return format.__deserialize_int__(self)
 
     def __deserialize_int__(self, n: int) -> int:
-        ...
+        if not isinstance(n, int):
+            raise RuntimeError("Expected int number")
+        return int(n)
 
 
 class Float(Field):
-    def deserialize(self, format: Format) -> float:
+    def __deserialize__(self, format: Format) -> float:
         return format.__deserialize_float__(self)
 
     def __deserialize_float__(self, n: float) -> float:
-        ...
+        if not isinstance(n, float):
+            raise RuntimeError("Expected float number")
+        return float(n)
 
 
 class Str(Field):
-    def deserialize(self, format: Format) -> str:
-        return format.__deserialize_str__(self)
+    @classmethod
+    def __deserialize__(cls: Type[Str], format: Format) -> str:
+        return format.__deserialize_str__(cls)
 
-    def __deserialize_str__(self, s: str) -> str:
-        ...
+    @staticmethod
+    def __from_str__(s: str) -> str:
+        return str(s)
 
 
 class Null(Field):
-    def deserialize(self, format: Format) -> Type[None]:
+    def __deserialize__(self, format: Format) -> Type[None]:
         return format.__deserialize_none__(self)
 
     def __deserialize_none__(self, a: Type[None]) -> Type[None]:
-        ...
+        return a

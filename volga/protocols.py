@@ -14,7 +14,7 @@ class supportsDeserialization(Protocol):
     or data formats to be able to be deserialized to and from.
     """
 
-    def deserialize(self, format: Format) -> RT:
+    def __deserialize__(self, format: Format) -> RT:
         raise NotImplementedError
 
     def __deserialize_bool__(self, value: bool) -> RT:
