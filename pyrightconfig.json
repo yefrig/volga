@@ -1,6 +1,6 @@
 {
     "include": [
-        "src/volga"
+        "volga"
     ],
     "exclude": [
         "**/node_modules"
