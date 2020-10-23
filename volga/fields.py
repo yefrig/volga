@@ -1,14 +1,10 @@
-from __future__ import annotations
-
-
-from typing import TYPE_CHECKING, Type
-from volga.protocols import supportsDeserialization
+from typing import Any, TYPE_CHECKING, Type
 
 if TYPE_CHECKING:
     from volga.format import Format
 
 
-class Field(supportsDeserialization):
+class Field:
     """
     Provides methods for a data format to construct this
     field from any of the supported volga data types.
@@ -31,8 +27,6 @@ class Int(Field):
         return format.__deserialize_int__(self)
 
     def __deserialize_int__(self, n: int) -> int:
-        if not isinstance(n, int):
-            raise RuntimeError("Expected int number")
         return int(n)
 
 
@@ -41,14 +35,12 @@ class Float(Field):
         return format.__deserialize_float__(self)
 
     def __deserialize_float__(self, n: float) -> float:
-        if not isinstance(n, float):
-            raise RuntimeError("Expected float number")
         return float(n)
 
 
 class Str(Field):
     @classmethod
-    def __deserialize__(cls: Type[Str], format: Format) -> str:
+    def __deserialize__(cls: Type[Any], format: Format) -> str:
         return format.__deserialize_str__(cls)
 
     @staticmethod

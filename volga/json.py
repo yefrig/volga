@@ -1,16 +1,14 @@
 from __future__ import annotations
-from typing import Any, TYPE_CHECKING, Type, Union
+from typing import Any, Mapping, Type, Union
 
 import re
 
 from typing_extensions import get_type_hints
 
-if TYPE_CHECKING:
-    from volga.fields import Field
 
 from volga.format import Format
 from volga.schema import Schema
-from volga.fields import *
+from volga.fields import Str
 
 RE_FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
@@ -24,7 +22,7 @@ NUMBER_RE = re.compile(
 )
 
 
-class JSON:
+class JSON(Format):
     def __init__(self, input: str) -> None:
         self.s: str = input
         self.idx: int = 0
@@ -84,16 +82,13 @@ class JSON:
         else:
             raise RuntimeError("Expected null")
 
-    def parse_dict(self) -> dict:
-        ...
-
-    def __deserialize_str__(self, constructor: Type[Any]) -> str:
+    def __deserialize_str__(self, constructor: Type[Str]) -> str:
 
         return constructor.__from_str__(self.parse_str())
 
-    def __deserialize_dict__(self, constructor: Type[Any]) -> str:
+    def __deserialize_dict__(self, constructor: Type[User]) -> User:
 
-        res = {}
+        res: Mapping[str, str] = {}
 
         if self.s[self.idx] != "{":
             raise RuntimeError("Expected dict")
@@ -127,7 +122,7 @@ class JSON:
 
 
 # TODO: move this back to schema using Field for testing
-def deserialize(input: str, cls: Type[Schema]) -> Any:
+def deserialize(input: str, cls: Type[User]) -> Any:
 
     format = JSON(input)
 
@@ -139,21 +134,21 @@ class User(Schema):
     name: Str
 
     def __repr__(self) -> str:
-        return "User(name=" + self.name + ")"
+        return "User(name=" + self.name.__repr__() + ")"
 
     @classmethod
-    def from_dict(cls: Type[User], d: dict):
+    def from_dict(cls: Type[User], d: Mapping[str, str]):
         instance = cls()
         for key in d:
             setattr(instance, key, d[key])
         return instance
 
     @classmethod
-    def __deserialize__(cls: Type[User], format: Format) -> User:
+    def __deserialize__(cls: Type[User], format: JSON) -> User:
         return format.__deserialize_dict__(cls)
 
     @classmethod
-    def __from_dict__(cls: Type[User], d: dict) -> User:
+    def __from_dict__(cls: Type[User], d: Mapping[str, str]) -> User:
         return cls.from_dict(d)
 
 
