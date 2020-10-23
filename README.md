@@ -3,10 +3,10 @@
 [![Build Status]][build] [![Azure DevOps coverage]][Azure coverage url] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
 
 [Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=main
-[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=2&branchName=main
+[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=5&branchName=main
 
-[Azure DevOps coverage]: https://img.shields.io/azure-devops/coverage/yefrigaitan/volga/2
-[Azure coverage url]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
+[Azure DevOps coverage]: https://img.shields.io/azure-devops/coverage/yefrigaitan/volga/5
+[Azure coverage url]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=5&branchName=main
 
 [license]: https://img.shields.io/github/license/yefrig/volga
 [license-file]: https://github.com/yefrig/volga/blob/main/LICENSE
