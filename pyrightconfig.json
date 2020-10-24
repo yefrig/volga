@@ -16,5 +16,5 @@
     "reportOptionalSubscript": true,
     "reportOptionalMemberAccess": true,
     "reportOptionalCall": true,
-    "pythonVersion": "3.8"
+    "pythonVersion": "3.9"
 }
