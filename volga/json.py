@@ -1,14 +1,13 @@
 from __future__ import annotations
-from typing import Any, Mapping, Type, Union
+from typing import Mapping, Type, Union
 
 import re
 
 from typing import get_type_hints
-from volga.fields import Bool
+from volga.fields import Bool, T
 
 
 from volga.format import Format
-from volga.schema import Schema
 
 RE_FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
@@ -82,10 +81,10 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected null")
 
-    def __deserialize_str__(self, constructor: Type[Bool]) -> Bool:
+    def __deserialize_str__(self, constructor: Type[T]) -> T:
         raise NotImplementedError
 
-    def __deserialize_dict__(self, constructor: Type[User]) -> User:
+    def __deserialize_dict__(self, constructor: Type[T]) -> T:
 
         res: Mapping[str, Bool] = {}
 
@@ -120,21 +119,21 @@ class JSON(Format):
 
         return constructor.__from_dict__(res)
 
-    def __deserialize_bool__(self, constructor: Type[Bool]) -> Bool:
+    def __deserialize_bool__(self, constructor: Type[T]) -> T:
         return constructor.__from_bool__(self.parse_bool())
 
-    def __deserialize_int__(self, constructor: Type[User]) -> User:
+    def __deserialize_int__(self, constructor: Type[T]) -> T:
         raise NotImplementedError
 
-    def __deserialize_float__(self, constructor: Type[User]) -> User:
+    def __deserialize_float__(self, constructor: Type[T]) -> T:
         raise NotImplementedError
 
-    def __deserialize_none__(self, constructor: Type[User]) -> User:
+    def __deserialize_none__(self, constructor: Type[T]) -> T:
         raise NotImplementedError
 
 
 # TODO: move this back to schema using Field for testing
-def deserialize(input: str, cls: Type[User]) -> Any:
+def deserialize(input: str, cls: Type[T]) -> T:
 
     format = JSON(input)
 
@@ -149,19 +148,37 @@ class User:
         return "User({self.name})".format(self=self)
 
     @classmethod
-    def from_dict(cls: Type[User], d: Mapping[str, Bool]):
-        instance = cls()
-        for key in d:
-            setattr(instance, key, d[key])
-        return instance
-
-    @classmethod
-    def __deserialize__(cls: Type[User], format: JSON) -> User:
+    def __deserialize__(cls, format: Format) -> User:
         return format.__deserialize_dict__(cls)
 
     @classmethod
-    def __from_dict__(cls: Type[User], d: Mapping[str, Bool]) -> User:
-        return cls.from_dict(d)
+    def __from_dict__(cls, d: Mapping[T, T]) -> User:
+
+        instance = cls()
+
+        for key in d:
+            setattr(instance, key.__str__(), d[key])
+        return instance
+
+    @classmethod
+    def __from_bool__(cls, value: bool) -> T:
+        raise NotImplementedError
+
+    @classmethod
+    def __from_int__(cls, value: int) -> T:
+        raise NotImplementedError
+
+    @classmethod
+    def __from_float__(cls, value: float) -> T:
+        raise NotImplementedError
+
+    @classmethod
+    def __from_str__(cls, value: str) -> T:
+        raise NotImplementedError
+
+    @classmethod
+    def __from_none__(cls, value: None) -> T:
+        raise NotImplementedError
 
 
 user = deserialize('{"name":true}', User)
