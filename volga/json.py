@@ -3,12 +3,12 @@ from typing import Any, Mapping, Type, Union
 
 import re
 
-from typing_extensions import get_type_hints
+from typing import get_type_hints
+from volga.fields import Bool
 
 
 from volga.format import Format
 from volga.schema import Schema
-from volga.fields import Str
 
 RE_FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
@@ -82,13 +82,12 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected null")
 
-    def __deserialize_str__(self, constructor: Type[Str]) -> str:
-
-        return constructor.__from_str__(self.parse_str())
+    def __deserialize_str__(self, constructor: Type[Bool]) -> Bool:
+        raise NotImplementedError
 
     def __deserialize_dict__(self, constructor: Type[User]) -> User:
 
-        res: Mapping[str, str] = {}
+        res: Mapping[str, Bool] = {}
 
         if self.s[self.idx] != "{":
             raise RuntimeError("Expected dict")
@@ -114,11 +113,24 @@ class JSON(Format):
             self.idx += 1
 
             # parse the value according to schema
+            print(attrs[key])
             value = attrs[key].__deserialize__(self)
 
             res[parsed_key] = value
 
         return constructor.__from_dict__(res)
+
+    def __deserialize_bool__(self, constructor: Type[Bool]) -> Bool:
+        return constructor.__from_bool__(self.parse_bool())
+
+    def __deserialize_int__(self, constructor: Type[User]) -> User:
+        raise NotImplementedError
+
+    def __deserialize_float__(self, constructor: Type[User]) -> User:
+        raise NotImplementedError
+
+    def __deserialize_none__(self, constructor: Type[User]) -> User:
+        raise NotImplementedError
 
 
 # TODO: move this back to schema using Field for testing
@@ -129,15 +141,15 @@ def deserialize(input: str, cls: Type[User]) -> Any:
     return cls.__deserialize__(format)
 
 
-class User(Schema):
+class User:
 
-    name: Str
+    name: Bool
 
-    def __repr__(self) -> str:
-        return "User(name=" + self.name.__repr__() + ")"
+    def __str__(self) -> str:
+        return "User({self.name})".format(self=self)
 
     @classmethod
-    def from_dict(cls: Type[User], d: Mapping[str, str]):
+    def from_dict(cls: Type[User], d: Mapping[str, Bool]):
         instance = cls()
         for key in d:
             setattr(instance, key, d[key])
@@ -148,9 +160,9 @@ class User(Schema):
         return format.__deserialize_dict__(cls)
 
     @classmethod
-    def __from_dict__(cls: Type[User], d: Mapping[str, str]) -> User:
+    def __from_dict__(cls: Type[User], d: Mapping[str, Bool]) -> User:
         return cls.from_dict(d)
 
 
-user = deserialize('{"name":"yefri"}', User)
+user = deserialize('{"name":true}', User)
 print(user)

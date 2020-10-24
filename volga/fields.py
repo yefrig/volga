@@ -1,10 +1,12 @@
-from typing import Any, TYPE_CHECKING, Type
+from __future__ import annotations
+from typing import Mapping
 
-if TYPE_CHECKING:
-    from volga.format import Format
+from volga.types import supportsDeser
+from volga.types import T
+from volga.format import Format
 
 
-class Field:
+class Field(supportsDeser):
     """
     Provides methods for a data format to construct this
     field from any of the supported volga data types.
@@ -14,43 +16,39 @@ class Field:
 
 
 class Bool(Field):
-    def __deserialize__(self, format: Format) -> bool:
-        # hint data format to
-        return format.__deserialize_bool__(self)
 
-    def __deserialize_bool__(self, b: bool) -> bool:
-        return bool(b)
+    value: bool
 
+    def __init__(self, b: bool) -> None:
+        self.value = b
 
-class Int(Field):
-    def __deserialize__(self, format: Format) -> int:
-        return format.__deserialize_int__(self)
+    def __str__(self) -> str:
+        return str(self.value)
 
-    def __deserialize_int__(self, n: int) -> int:
-        return int(n)
-
-
-class Float(Field):
-    def __deserialize__(self, format: Format) -> float:
-        return format.__deserialize_float__(self)
-
-    def __deserialize_float__(self, n: float) -> float:
-        return float(n)
-
-
-class Str(Field):
     @classmethod
-    def __deserialize__(cls: Type[Any], format: Format) -> str:
-        return format.__deserialize_str__(cls)
+    def __deserialize__(cls, format: Format) -> Bool:
+        return format.__deserialize_bool__(cls)
 
-    @staticmethod
-    def __from_str__(s: str) -> str:
-        return str(s)
+    @classmethod
+    def __from_bool__(cls, value: bool) -> T:
+        return cls(value)
 
+    @classmethod
+    def __from_dict__(cls, d: Mapping[T, T]) -> T:
+        raise NotImplementedError
 
-class Null(Field):
-    def __deserialize__(self, format: Format) -> Type[None]:
-        return format.__deserialize_none__(self)
+    @classmethod
+    def __from_int__(cls, value: int) -> T:
+        raise NotImplementedError
 
-    def __deserialize_none__(self, a: Type[None]) -> Type[None]:
-        return a
+    @classmethod
+    def __from_float__(cls, value: float) -> T:
+        raise NotImplementedError
+
+    @classmethod
+    def __from_str__(cls, value: str) -> T:
+        raise NotImplementedError
+
+    @classmethod
+    def __from_none__(cls, value: None) -> T:
+        raise NotImplementedError
