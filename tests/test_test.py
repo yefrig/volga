@@ -1,2 +1,5 @@
-def test_hello():
-    assert 1 == 1
+from volga.json import foo_test
+
+
+def test_mock():
+    assert 1 == foo_test()

@@ -92,4 +92,8 @@ def deserialize(input: str, field: Field) -> Any:
     return field.deserialize(format)
 
 
+def foo_test():
+    return 1
+
+
 print(deserialize('"hello, this is a string!!!"', Str()))
