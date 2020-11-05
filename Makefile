@@ -3,7 +3,7 @@
 default: lint
 
 test:
-	poetry run coverage run --branch -m pytest --junitxml=junit/test-results.xml -v src
+	poetry run coverage run --branch -m pytest --junitxml=junit/test-results.xml -v
 
 lint: pyright black
 
