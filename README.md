@@ -48,7 +48,8 @@ objects.
 
 ## Documentation
 
-Full documentation will soon be available.
+Full documentation will soon be available on https://volga.readthedocs.io/en/latest/
+
 
 ## Where to get it
 The source code is currently hosted on GitHub at:
