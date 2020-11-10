@@ -1,6 +1,7 @@
 # volga: flexible object deserialization
 
 [![Build Status]][build] [![Azure DevOps coverage]][Azure coverage url] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
+[![Docs](https://img.shields.io/readthedocs/volga.svg)](https://volga.readthedocs.io)
 
 [Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=main
 [build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=9&branchName=main
