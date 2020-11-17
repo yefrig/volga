@@ -1,12 +1,14 @@
 {
     "include": [
-        "volga"
+        "volga",
+        "tests"
     ],
     "exclude": [
         "**/node_modules"
     ],
     "strict": [
-        "volga"
+        "volga",
+        "tests"
     ],
     "venvPath": "./.venv",
     "reportMissingImports": true,
