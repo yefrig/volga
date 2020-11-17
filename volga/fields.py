@@ -131,7 +131,7 @@ class Null(Field):
 
     @classmethod
     def __deserialize__(cls: Type[_T], format: Format) -> _T:
-        return format.__deserialize_str__(cls)
+        return format.__deserialize_none__(cls)
 
     @classmethod
     def __from_none__(cls) -> Null:
