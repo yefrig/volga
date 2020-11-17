@@ -1,7 +1,7 @@
 from __future__ import annotations
-from typing import Any, Mapping
+from typing import Any
 
-from volga.types import supportsDeser, T
+from volga.types import T, supportsDeser
 from volga.format import Format
 
 
@@ -101,11 +101,11 @@ class Str(str, Field):
         return cls(value)
 
     @classmethod
-    def __from_none__(cls, value: None) -> Str:
-        return cls(value)
+    def __from_none__(cls) -> Str:
+        return cls(None)
 
     @classmethod
-    def __from_dict__(cls, d: Mapping[T, T]) -> Str:
+    def __from_dict__(cls, d: dict[T, T]) -> Str:
         return cls(d)
 
 
@@ -130,8 +130,8 @@ class Null(Field):
         return format.__deserialize_str__(cls)
 
     @classmethod
-    def __from_none__(cls, value: None) -> Null:
-        return cls(value)
+    def __from_none__(cls) -> Null:
+        return cls(None)
 
 
 class Dict(dict[T, T], Field):
@@ -140,5 +140,5 @@ class Dict(dict[T, T], Field):
         return format.__deserialize_dict__(cls)
 
     @classmethod
-    def __from_dict__(cls, d: Mapping[T, T]) -> Dict[T]:
+    def __from_dict__(cls, d: dict[T, T]) -> Dict[T]:
         return cls(d)
