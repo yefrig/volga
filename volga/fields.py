@@ -1,8 +1,7 @@
 from __future__ import annotations
-from typing import Mapping
+from typing import Any, Mapping
 
-from volga.types import supportsDeser
-from volga.types import T
+from volga.types import supportsDeser, T
 from volga.format import Format
 
 
@@ -15,40 +14,131 @@ class Field(supportsDeser):
     ...
 
 
-class Bool(Field):
-
-    value: bool
-
-    def __init__(self, b: bool) -> None:
-        self.value = b
-
-    def __str__(self) -> str:
-        return str(self.value)
+class Bool(int, Field):
+    def __repr__(self) -> str:
+        return bool.__repr__(bool(self))
 
     @classmethod
     def __deserialize__(cls, format: Format) -> Bool:
         return format.__deserialize_bool__(cls)
 
     @classmethod
-    def __from_bool__(cls, value: bool) -> T:
+    def __from_bool__(cls, value: bool) -> Bool:
         return cls(value)
 
     @classmethod
-    def __from_dict__(cls, d: Mapping[T, T]) -> T:
-        raise NotImplementedError
+    def __from_int__(cls, value: int) -> Bool:
+        return cls(value)
 
     @classmethod
-    def __from_int__(cls, value: int) -> T:
-        raise NotImplementedError
+    def __from_float__(cls, value: float) -> Bool:
+        return cls(value)
+
+
+class Int(int, Field):
+    @classmethod
+    def __deserialize__(cls, format: Format) -> Int:
+        return format.__deserialize_int__(cls)
 
     @classmethod
-    def __from_float__(cls, value: float) -> T:
-        raise NotImplementedError
+    def __from_bool__(cls, value: bool) -> Int:
+        return cls(value)
 
     @classmethod
-    def __from_str__(cls, value: str) -> T:
-        raise NotImplementedError
+    def __from_int__(cls, value: int) -> Int:
+        return cls(value)
 
     @classmethod
-    def __from_none__(cls, value: None) -> T:
-        raise NotImplementedError
+    def __from_float__(cls, value: float) -> Int:
+        return cls(value)
+
+    @classmethod
+    def __from_str__(cls, value: str) -> Int:
+        return cls(value)
+
+
+class Float(float, Field):
+    @classmethod
+    def __deserialize__(cls, format: Format) -> Float:
+        return format.__deserialize_float__(cls)
+
+    @classmethod
+    def __from_bool__(cls, value: bool) -> Float:
+        return cls(value)
+
+    @classmethod
+    def __from_int__(cls, value: int) -> Float:
+        return cls(value)
+
+    @classmethod
+    def __from_float__(cls, value: float) -> Float:
+        return cls(value)
+
+    @classmethod
+    def __from_str__(cls, value: str) -> Float:
+        return cls(value)
+
+
+class Str(str, Field):
+    @classmethod
+    def __deserialize__(cls, format: Format) -> Str:
+        return format.__deserialize_str__(cls)
+
+    @classmethod
+    def __from_bool__(cls, value: bool) -> Str:
+        return cls(value)
+
+    @classmethod
+    def __from_int__(cls, value: int) -> Str:
+        return cls(value)
+
+    @classmethod
+    def __from_float__(cls, value: float) -> Str:
+        return cls(value)
+
+    @classmethod
+    def __from_str__(cls, value: str) -> Str:
+        return cls(value)
+
+    @classmethod
+    def __from_none__(cls, value: None) -> Str:
+        return cls(value)
+
+    @classmethod
+    def __from_dict__(cls, d: Mapping[T, T]) -> Str:
+        return cls(d)
+
+
+class Null(Field):
+
+    """ Null objects always and reliably "do nothing." """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        return None
+
+    def __call__(self, *args: Any, **kwargs: Any) -> None:
+        return None
+
+    def __repr__(self) -> str:
+        return "None"
+
+    def __nonzero__(self) -> int:
+        return 0
+
+    @classmethod
+    def __deserialize__(cls, format: Format) -> Null:
+        return format.__deserialize_str__(cls)
+
+    @classmethod
+    def __from_none__(cls, value: None) -> Null:
+        return cls(value)
+
+
+class Dict(dict[T, T], Field):
+    @classmethod
+    def __deserialize__(cls, format: Format) -> Dict[T]:
+        return format.__deserialize_dict__(cls)
+
+    @classmethod
+    def __from_dict__(cls, d: Mapping[T, T]) -> Dict[T]:
+        return cls(d)
