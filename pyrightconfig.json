@@ -6,7 +6,7 @@
         "**/node_modules"
     ],
     "strict": [
-        "src"
+        "volga"
     ],
     "venvPath": "./.venv",
     "reportMissingImports": true,

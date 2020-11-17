@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import abstractmethod
-from typing import Protocol, TypeVar
+from typing import Protocol, Type, TypeVar
 
 from volga.format import Format
 
@@ -11,27 +11,27 @@ T = TypeVar("T", bound="supportsDeser")
 
 class Constructor(Protocol):
     @classmethod
-    def __from_bool__(cls, value: bool) -> T:
+    def __from_bool__(cls: Type[T], value: bool) -> T:
         raise NotImplementedError
 
     @classmethod
-    def __from_int__(cls, value: int) -> T:
+    def __from_int__(cls: Type[T], value: int) -> T:
         raise NotImplementedError
 
     @classmethod
-    def __from_float__(cls, value: float) -> T:
+    def __from_float__(cls: Type[T], value: float) -> T:
         raise NotImplementedError
 
     @classmethod
-    def __from_str__(cls, value: str) -> T:
+    def __from_str__(cls: Type[T], value: str) -> T:
         raise NotImplementedError
 
     @classmethod
-    def __from_none__(cls) -> T:
+    def __from_none__(cls: Type[T]) -> T:
         raise NotImplementedError
 
     @classmethod
-    def __from_dict__(cls, d: dict[T, T]) -> T:
+    def __from_dict__(cls: Type[T], d: dict[T, T]) -> T:
         raise NotImplementedError
 
 
@@ -40,5 +40,5 @@ class supportsDeser(Constructor, Protocol):
 
     @classmethod
     @abstractmethod
-    def __deserialize__(cls, format: Format) -> T:
+    def __deserialize__(cls: Type[T], format: Format) -> T:
         raise NotImplementedError

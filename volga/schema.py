@@ -1,7 +1,10 @@
 from __future__ import annotations
+from typing import Type, TypeVar
 
 from volga.types import supportsDeser, T
 from volga.format import Format
+
+_T = TypeVar("_T")
 
 
 class Schema(supportsDeser):
@@ -9,7 +12,7 @@ class Schema(supportsDeser):
         return str(vars(self))
 
     @classmethod
-    def __deserialize__(cls, format: Format) -> Schema:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         """deserialize schemas from dictionaries"""
         return format.__deserialize_dict__(cls)
 

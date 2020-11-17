@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any
+from typing import Any, Type, TypeVar
 
 from volga.types import T, supportsDeser
 from volga.format import Format
@@ -14,12 +14,16 @@ class Field(supportsDeser):
     ...
 
 
+# needed to match return type for class method from cls
+_T = TypeVar("_T")
+
+
 class Bool(int, Field):
     def __repr__(self) -> str:
         return bool.__repr__(bool(self))
 
     @classmethod
-    def __deserialize__(cls, format: Format) -> Bool:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         return format.__deserialize_bool__(cls)
 
     @classmethod
@@ -37,7 +41,7 @@ class Bool(int, Field):
 
 class Int(int, Field):
     @classmethod
-    def __deserialize__(cls, format: Format) -> Int:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         return format.__deserialize_int__(cls)
 
     @classmethod
@@ -59,7 +63,7 @@ class Int(int, Field):
 
 class Float(float, Field):
     @classmethod
-    def __deserialize__(cls, format: Format) -> Float:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         return format.__deserialize_float__(cls)
 
     @classmethod
@@ -81,7 +85,7 @@ class Float(float, Field):
 
 class Str(str, Field):
     @classmethod
-    def __deserialize__(cls, format: Format) -> Str:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         return format.__deserialize_str__(cls)
 
     @classmethod
@@ -126,7 +130,7 @@ class Null(Field):
         return 0
 
     @classmethod
-    def __deserialize__(cls, format: Format) -> Null:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         return format.__deserialize_str__(cls)
 
     @classmethod
@@ -136,7 +140,7 @@ class Null(Field):
 
 class Dict(dict[T, T], Field):
     @classmethod
-    def __deserialize__(cls, format: Format) -> Dict[T]:
+    def __deserialize__(cls: Type[_T], format: Format) -> _T:
         return format.__deserialize_dict__(cls)
 
     @classmethod
