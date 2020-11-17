@@ -137,6 +137,9 @@ class Null(Field):
     def __from_none__(cls) -> Null:
         return cls(None)
 
+    def __eq__(self, other):
+        return other is None
+
 
 class Dict(dict[T, T], Field):
     @classmethod

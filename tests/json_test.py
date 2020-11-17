@@ -31,29 +31,29 @@ def test_serialize_float(x: float):
 #     assert deserialize(json.dumps(x), Str) == x
 
 # TODO fix the way we check for equality
-# @given(st.none())
-# def test_serialize_none(x: None):
-#     assert deserialize(json.dumps(x), Null) == None
+@given(st.none())
+def test_serialize_none(x: None):
+    assert deserialize(json.dumps(x), Null) == None
 
 
-class User(Schema):
-    # name: Str
-    age: Int
-    score: Float
-    verified: Bool
+# class User(Schema):
+#     # name: Str
+#     age: Int
+#     score: Float
+#     verified: Bool
 
 
-@given(
-    a=st.integers(), s=st.floats(allow_infinity=False, allow_nan=False), v=st.booleans()
-)
-def test_deserialize_user(a: int, s: float, v: bool):
-    userJSON = (
-        '{"age":'
-        + json.dumps(a)
-        + ',"score":'
-        + json.dumps(s)
-        + ',"verified":'
-        + json.dumps(v)
-        + "}"
-    )
-    assert deserialize(userJSON, User) == User(age=a, score=s, verified=v)
+# @given(
+#     a=st.integers(), s=st.floats(allow_infinity=False, allow_nan=False), v=st.booleans()
+# )
+# def test_deserialize_user(a: int, s: float, v: bool):
+#     userJSON = (
+#         '{"age":'
+#         + json.dumps(a)
+#         + ',"score":'
+#         + json.dumps(s)
+#         + ',"verified":'
+#         + json.dumps(v)
+#         + "}"
+#     )
+#     assert deserialize(userJSON, User) == User(age=a, score=s, verified=v)
