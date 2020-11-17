@@ -1,8 +1,10 @@
 from __future__ import annotations
 from abc import abstractmethod
-from typing import Protocol, Type, TypeVar
+from typing import Protocol, TYPE_CHECKING, Type, TypeVar
 
-from volga.format import Format
+
+if TYPE_CHECKING:
+    from volga.format import Format
 
 
 # represents a generic volga data type that can be deserialized
