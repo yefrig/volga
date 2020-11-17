@@ -152,4 +152,3 @@ def deserialize(input: str, cls: Type[T]) -> T:
     format = JSON(input)
 
     return cls.__deserialize__(format)
-  
