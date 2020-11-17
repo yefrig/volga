@@ -1,12 +1,13 @@
 # volga: flexible object deserialization
 
 [![Build Status]][build] [![Azure DevOps coverage]][Azure coverage url] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
+[![Docs](https://img.shields.io/readthedocs/volga.svg)](https://volga.readthedocs.io)
 
 [Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=main
-[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
+[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=9&branchName=main
 
-[Azure DevOps coverage]: https://img.shields.io/azure-devops/coverage/yefrigaitan/volga/1
-[Azure coverage url]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
+[Azure DevOps coverage]: https://img.shields.io/azure-devops/coverage/yefrigaitan/volga/9
+[Azure coverage url]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=9&branchName=main
 
 [license]: https://img.shields.io/github/license/yefrig/volga
 [license-file]: https://github.com/yefrig/volga/blob/main/LICENSE
@@ -44,7 +45,8 @@ print(user) # prints object User(name='bob', age=20)
 
 ## Documentation
 
-Full documentation will soon be available.
+Full documentation will soon be available on https://volga.readthedocs.io/en/latest/
+
 
 ## Where to get it
 The source code is currently hosted on GitHub at:

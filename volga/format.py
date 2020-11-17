@@ -6,9 +6,11 @@ from typing import Protocol, Type
 from volga.types import T
 
 
+
 class Format(Protocol):
     """This protocol defines the methods data formats should support
         if they want to interact with volga's types.
+        if they want to interact with volga's Field types.
 
     :raises NotImplementedError: Classes that subclass this protocol
         should not called any of these functions using super().
