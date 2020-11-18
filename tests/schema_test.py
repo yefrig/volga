@@ -28,10 +28,6 @@ def test_Schema_deserialize(a: int, s: float, v: bool):
         + json.dumps(v)
         + "}"
     )
-    print(deserialize(userJSON, User), str({"age": a, "score": s, "verified": v}))
-
     assert str(deserialize(userJSON, User)) == str(
         User.__from_dict__({"age": a, "score": s, "verified": v})
     )
-
-    print(deserialize(userJSON, User))
