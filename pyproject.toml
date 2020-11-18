@@ -14,7 +14,7 @@ license = "MIT"
 name = "volga"
 readme = "README.md"
 repository = "https://github.com/yefrig/volga"
-version = "0.1.2"
+version = "0.2.0"
 
 [tool.poetry.dependencies]
 python = "^3.9"
