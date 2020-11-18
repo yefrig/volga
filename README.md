@@ -21,7 +21,7 @@
 ## What is it?
 **volga** provides fast, extensible, and expressive APIs
 to deserialize any python data structure from any supported data format
-(such as JSON and YAML). Volga allows full customization of the deserialization 
+(such as JSON and *eventually* YAML and more). Volga allows full customization of the deserialization 
 behavior of your data structures resulting in schema-tized, validated, type-checked 
 objects.
 
@@ -30,14 +30,17 @@ import volga
 
 # Define your model
 class User(volga.Schema):
-    name: volga.fields.Str()
-    age: volga.fields.Int()
+    name: volga.fields.Str
+    age: volga.fields.Int
+    verified: volga.fields.Bool
   
-json_data = '{"name":"bob","age":20}'
+json_data = '{"name":"bob","age":20,"verified":true}'
 
-user: User = volga.json.from_str(json_data, User)
+bob = volga.json.deserialize(json_data, User)
 
-print(user) # prints object User(name='bob', age=20)
+assert isinstance(bob, User)
+
+print(bob) # prints object User(name='bob', age=20, verified=True)
 ```
 
 ## Main Features
