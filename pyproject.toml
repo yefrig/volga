@@ -17,7 +17,7 @@ repository = "https://github.com/yefrig/volga"
 version = "0.1.2"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^20.8b1", allow-prereleases = true}
@@ -43,6 +43,6 @@ exclude_lines = [
   '@abstractmethod',
   'if TYPE_CHECKING',
 ]
-fail_under = 0
+fail_under = 90
 precision = 1
 show_missing = true

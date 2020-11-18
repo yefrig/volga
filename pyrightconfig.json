@@ -1,12 +1,14 @@
 {
     "include": [
-        "src/volga"
+        "volga",
+        "tests"
     ],
     "exclude": [
         "**/node_modules"
     ],
     "strict": [
-        "src"
+        "volga",
+        "tests"
     ],
     "venvPath": "./.venv",
     "reportMissingImports": true,
@@ -16,5 +18,5 @@
     "reportOptionalSubscript": true,
     "reportOptionalMemberAccess": true,
     "reportOptionalCall": true,
-    "pythonVersion": "3.8"
+    "pythonVersion": "3.9"
 }

@@ -1,158 +1,79 @@
 from __future__ import annotations
+from abc import ABC
+from typing import Any
+
+from volga.types import supportsDeser
+from volga.format import Format
 
 
-from typing import TYPE_CHECKING, Type
-from volga.protocols import supportsDeserialization
-
-if TYPE_CHECKING:
-    from volga.format import Format
-
-
-class Field(supportsDeserialization):
-    """The base class all fields should extend from.
-
-    :param supportsDeserialization: [description]
-    :type supportsDeserialization: [type]
+class Field(ABC):
+    """
+    Provides methods for a data format to construct this
+    field from any of the supported volga data types.
     """
 
-    ...
+
+class Bool(int, Field, supportsDeser):
+    def __init__(self, value: Any) -> None:
+        super().__init__(value)
+
+    def __repr__(self) -> str:
+        return bool.__repr__(bool(self))
+
+    def __deserialize__(self, format: Format) -> supportsDeser:
+        return format.__deserialize_bool__(self.__class__)
 
 
-class Bool(Field):
-    """Wrapper class to serialize and deserialize boolean types.
+class Int(int, Field, supportsDeser):
+    def __init__(self, value: Any) -> None:
+        super().__init__(value)
 
-    :param Field: The base class all fields should extend from.
-    :type Field: [type]
-    """
-
-    def deserialize(self, format: Format) -> bool:
-        """[summary]
-
-        :param format: [description]
-        :type format: Format
-        :return: [description]
-        :rtype: bool
-        """
-        return format.__deserialize_bool__(self)
-
-    def __deserialize_bool__(self, b: bool) -> bool:
-        """[summary]
-
-        :param b: [description]
-        :type b: bool
-        :return: [description]
-        :rtype: bool
-        """
-        ...
+    def __deserialize__(self, format: Format) -> supportsDeser:
+        return format.__deserialize_int__(self.__class__)
 
 
-class Int(Field):
-    """Wrapper class to serialize and deserialize integer types.
+class Float(float, Field, supportsDeser):
+    def __init__(self, value: Any) -> None:
+        super().__init__(value)
 
-    :param Field: The base class all fields should extend from.
-    :type Field: [type]
-    """
-
-    def deserialize(self, format: Format) -> int:
-        """[summary]
-
-        :param format: [description]
-        :type format: Format
-        :return: [description]
-        :rtype: int
-        """
-        return format.__deserialize_int__(self)
-
-    def __deserialize_int__(self, n: int) -> int:
-        """[summary]
-
-        :param n: [description]
-        :type n: int
-        :return: [description]
-        :rtype: int
-        """
-        ...
+    def __deserialize__(self, format: Format) -> supportsDeser:
+        return format.__deserialize_float__(self.__class__)
 
 
-class Float(Field):
-    """Wrapper class to serialize and deserialize float types.
+class Str(str, Field, supportsDeser):
+    def __init__(self, value: Any) -> None:
+        super().__init__(value)
 
-    :param Field: The base class all fields should extend from.
-    :type Field: [type]
-    """
-
-    def deserialize(self, format: Format) -> float:
-        """[summary]
-
-        :param format: [description]
-        :type format: Format
-        :return: [description]
-        :rtype: float
-        """
-        return format.__deserialize_float__(self)
-
-    def __deserialize_float__(self, n: float) -> float:
-        """[summary]
-
-        :param n: [description]
-        :type n: float
-        :return: [description]
-        :rtype: float
-        """
-        ...
+    def __deserialize__(self, format: Format) -> supportsDeser:
+        return format.__deserialize_str__(self.__class__)
 
 
-class Str(Field):
-    """Wrapper class to serialize and deserialize string types.
+class Null(Field, supportsDeser):
 
-    :param Field: The base class all fields should extend from.
-    :type Field: [type]
-    """
+    """ Null objects always and reliably "do nothing." """
 
-    def deserialize(self, format: Format) -> str:
-        """[summary]
+    def __init__(self, value: Any) -> None:
+        return None
 
-        :param format: [description]
-        :type format: Format
-        :return: [description]
-        :rtype: str
-        """
-        return format.__deserialize_str__(self)
+    def __call__(self, *args: Any, **kwargs: Any) -> None:
+        return None
 
-    def __deserialize_str__(self, s: str) -> str:
-        """[summary]
+    def __repr__(self) -> str:
+        return "None"
 
-        :param s: [description]
-        :type s: str
-        :return: [description]
-        :rtype: str
-        """
-        ...
+    def __nonzero__(self) -> int:
+        return 0
+
+    def __deserialize__(self, format: Format) -> supportsDeser:
+        return format.__deserialize_none__(self.__class__)
+
+    def __eq__(self, other: Any):
+        return other is None
 
 
-class Null(Field):
-    """Wrapper class to serialize and deserialize Null values.
+class Dict(dict[Any, Any], Field, supportsDeser):
+    def __init__(self, value: Any) -> None:
+        super().__init__(value)
 
-    :param Field: The base class all fields should extend from.
-    :type Field: [type]
-    """
-
-    def deserialize(self, format: Format) -> Type[None]:
-        """[summary]
-
-        :param format: [description]
-        :type format: Format
-        :return: [description]
-        :rtype: Type[None]
-        """
-        return format.__deserialize_none__(self)
-
-    def __deserialize_none__(self, a: Type[None]) -> Type[None]:
-        """[summary]
-
-        :param a: [description]
-        :type a: Type[None]
-        :return: [description]
-        :rtype: Type[None]
-        """
-        ...
+    def __deserialize__(self, format: Format) -> supportsDeser:
+        return format.__deserialize_dict__(self.__class__)

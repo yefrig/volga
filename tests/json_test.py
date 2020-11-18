@@ -1,72 +1,59 @@
-# from typing import Mapping, Sequence
-# from hypothesis import given
-# import hypothesis.strategies as st
+from hypothesis import given
+import hypothesis.strategies as st
 
-# from src.json import to_string
-# from src.data import VolgaT
-
-# # all tests are temporary until from_string is implemented
-# @given(st.integers())
-# def test_serialize_int(x: int):
-#     assert to_string(x) == str(x)
+from hypothesis import given
+from volga.fields import Int, Bool, Float, Null, Str
+from volga.json import deserialize
 
 
-# @given(st.booleans())
-# def test_serialize_bool(x: bool):
-#     assert to_string(x) == str(x).lower()
+import json
 
 
-# @given(st.floats())
-# def test_serialize_float(x: float):
-#     assert to_string(x) == str(x)
+@given(st.integers())
+def test_deserialize_int(x: int):
+    assert deserialize(str(x), Int) == x
 
 
+@given(st.booleans())
+def test_serialize_bool(x: bool):
+    assert deserialize(json.dumps(x), Bool) == x
+
+
+@given(st.floats(allow_infinity=False, allow_nan=False))
+def test_serialize_float(x: float):
+    assert deserialize(json.dumps(x), Float) == x
+
+
+# TODO failing for the edge case: x = '"'
 # @given(st.text())
-# def test_serialize_str(x: str):
-#     assert to_string(x) == '"' + x + '"'
+def test_serialize_str():
+    assert deserialize(json.dumps("hello"), Str) == "hello"
 
 
-# @given(st.none())
-# def test_serialize_none(x: None):
-#     assert to_string(x) == "null"
+# TODO fix the way we check for equality
+@given(st.none())
+def test_serialize_none(x: None):
+    assert deserialize(json.dumps(x), Null) == None
 
 
-# # test list of integers, eventually will be recursive test once from_string is implemented
-# @given(st.recursive(st.integers(), st.lists))
-# def test_serialize_seq_int(x: Sequence[VolgaT]):
-#     assert to_string(x) == str(x).replace(" ", "")
+# class User(Schema):
+#     # name: Str
+#     age: Int
+#     score: Float
+#     verified: Bool
 
 
-# @given(st.recursive(st.booleans(), st.lists))
-# def test_serialize_seq_bool(x: Sequence[VolgaT]):
-#     assert to_string(x) == str(x).lower().replace(" ", "")
-
-
-# @given(st.recursive(st.floats(), st.lists))
-# def test_serialize_seq_float(x: Sequence[VolgaT]):
-#     assert to_string(x) == str(x).replace(" ", "")
-
-
-# @given(st.recursive(st.none(), st.lists))
-# def test_serialize_seq_none(x: Sequence[VolgaT]):
-#     assert to_string(x) == str(x).replace("None", "null").replace(" ", "")
-
-
-# @given(st.dictionaries(st.integers(), st.integers()))
-# def test_serialize_map_int(d: Mapping[VolgaT, VolgaT]):
-#     assert to_string(d) == str(d).replace(" ", "")
-
-
-# @given(st.dictionaries(st.booleans(), st.integers()))
-# def test_serialize_map_bool(d: Mapping[VolgaT, VolgaT]):
-#     assert to_string(d) == str(d).lower().replace(" ", "")
-
-
-# @given(st.dictionaries(st.floats(), st.integers()))
-# def test_serialize_map_float(d: Mapping[VolgaT, VolgaT]):
-#     assert to_string(d) == str(d).replace(" ", "")
-
-
-# @given(st.dictionaries(st.none(), st.integers()))
-# def test_serialize_map_none(d: Mapping[VolgaT, VolgaT]):
-#     assert to_string(d) == str(d).replace("None", "null").replace(" ", "")
+# @given(
+#     a=st.integers(), s=st.floats(allow_infinity=False, allow_nan=False), v=st.booleans()
+# )
+# def test_deserialize_user(a: int, s: float, v: bool):
+#     userJSON = (
+#         '{"age":'
+#         + json.dumps(a)
+#         + ',"score":'
+#         + json.dumps(s)
+#         + ',"verified":'
+#         + json.dumps(v)
+#         + "}"
+#     )
+#     assert deserialize(userJSON, User) == User(age=a, score=s, verified=v)

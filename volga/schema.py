@@ -1,22 +1,19 @@
+from __future__ import annotations
+from typing import Any
+
+from volga.types import supportsDeser
 from volga.format import Format
-from volga.protocols import supportsDeserialization
 
 
-class Schema(supportsDeserialization):
-    """[summary]
+class Schema(supportsDeser):
+    def __init__(self, d: dict[Any, Any]) -> None:
+        for key in d:
+            setattr(self, key.__str__(), d[key])
 
-    :param supportsDeserialization: [description]
-    :type supportsDeserialization: [type]
-    """
+    def __str__(self) -> str:
+        return str(vars(self))
 
-    def __init__(self) -> None:
-        """[summary]"""
-        ...
-
-    def __deserialize__(self, format: Format) -> None:
-        """[summary]
-
-        :param format: [description]
-        :type format: Format
-        """
-        return
+    @classmethod
+    def __deserialize__(cls, format: Format) -> supportsDeser:
+        """deserialize schemas from dictionaries"""
+        return format.__deserialize_dict__(cls)
