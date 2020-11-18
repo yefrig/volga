@@ -1,10 +1,13 @@
 from __future__ import annotations
-from typing import Type
+from typing import TYPE_CHECKING, Type
 
 import re
 
+if TYPE_CHECKING:
+    from volga.types import supportsDeser
+
 from typing import get_type_hints
-from volga.fields import Str, T
+from volga.fields import Bool, Float, Int, Null, Str
 
 
 from volga.format import Format
@@ -94,10 +97,10 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected null")
 
-    def __deserialize_str__(self, constructor: Type[T]) -> T:
+    def __deserialize_str__(self, constructor: Type[supportsDeser]) -> supportsDeser:
         return constructor.__from_str__(self.parse_str())
 
-    def __deserialize_dict__(self, constructor: Type[T]) -> T:
+    def __deserialize_dict__(self, constructor: Type[supportsDeser]) -> supportsDeser:
 
         res = {}
 
@@ -126,29 +129,46 @@ class JSON(Format):
 
             # parse the value according to schema
             print(attrs[key])
-            value = attrs[key].__deserialize__(self)
+            value = self.dispatch(attrs[key])
 
             res[Str(parsed_key)] = value
 
         return constructor.__from_dict__(res)
 
-    def __deserialize_bool__(self, constructor: Type[T]) -> T:
+    def __deserialize_bool__(self, constructor: Type[supportsDeser]) -> supportsDeser:
         return constructor.__from_bool__(self.parse_bool())
 
-    def __deserialize_int__(self, constructor: Type[T]) -> T:
+    def __deserialize_int__(self, constructor: Type[supportsDeser]) -> supportsDeser:
         return constructor.__from_int__(self.parse_int())
 
-    def __deserialize_float__(self, constructor: Type[T]) -> T:
+    def __deserialize_float__(self, constructor: Type[supportsDeser]) -> supportsDeser:
         return constructor.__from_float__(self.parse_float())
 
-    def __deserialize_none__(self, constructor: Type[T]) -> T:
+    def __deserialize_none__(self, constructor: Type[supportsDeser]) -> supportsDeser:
         # consume null
         self.parse_none()
-        return constructor.__from_none__()
+        return constructor.__from_none__(None)
+
+    def dispatch(self, cls: Type[supportsDeser]) -> supportsDeser:
+        if issubclass(cls, Bool):
+            return cls(False).__deserialize__(self)
+        elif issubclass(cls, Int):
+            return cls(0).__deserialize__(self)
+        elif issubclass(cls, Float):
+            return cls(0.0).__deserialize__(self)
+        elif issubclass(cls, Str):
+            return cls("").__deserialize__(self)
+        elif issubclass(cls, Null):
+            return cls(None).__deserialize__(self)
+        else:
+            return cls({}).__deserialize__(self)
 
 
-def deserialize(input: str, cls: Type[T]) -> T:
+def deserialize(input: str, cls: Type[supportsDeser]) -> supportsDeser:
 
     format = JSON(input)
 
-    return cls.__deserialize__(format)
+    # initialize empty instance to dispatch deserialize
+    # TODO: investigate why protocol is not working with class method
+
+    return format.dispatch(cls)

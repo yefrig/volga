@@ -1,11 +1,10 @@
-from typing import Mapping, Sequence
 from hypothesis import given
 import hypothesis.strategies as st
 
 from hypothesis import given
-from volga.fields import Int, Bool, Float, Str, Null, Dict
+from volga.fields import Int, Bool, Float, Null, Str
 from volga.json import deserialize
-from volga.schema import Schema
+
 
 import json
 
@@ -27,8 +26,9 @@ def test_serialize_float(x: float):
 
 # TODO failing for the edge case: x = '"'
 # @given(st.text())
-# def test_serialize_str(x: str):
-#     assert deserialize(json.dumps(x), Str) == x
+def test_serialize_str():
+    assert deserialize(json.dumps("hello"), Str) == "hello"
+
 
 # TODO fix the way we check for equality
 @given(st.none())

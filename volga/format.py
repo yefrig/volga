@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Protocol, Type
+from typing import Protocol, TYPE_CHECKING, Type
 
-from volga.types import T
+if TYPE_CHECKING:
+    from volga.types import supportsDeser
 
 
 class Format(Protocol):
@@ -16,25 +17,25 @@ class Format(Protocol):
     """
 
     @abstractmethod
-    def __deserialize_bool__(self, cls: Type[T]) -> T:
+    def __deserialize_bool__(self, cls: Type[supportsDeser]) -> supportsDeser:
         raise NotImplementedError
 
     @abstractmethod
-    def __deserialize_int__(self, cls: Type[T]) -> T:
+    def __deserialize_int__(self, cls: Type[supportsDeser]) -> supportsDeser:
         raise NotImplementedError
 
     @abstractmethod
-    def __deserialize_float__(self, cls: Type[T]) -> T:
+    def __deserialize_float__(self, cls: Type[supportsDeser]) -> supportsDeser:
         raise NotImplementedError
 
     @abstractmethod
-    def __deserialize_str__(self, cls: Type[T]) -> T:
+    def __deserialize_str__(self, cls: Type[supportsDeser]) -> supportsDeser:
         raise NotImplementedError
 
     @abstractmethod
-    def __deserialize_dict__(self, cls: Type[T]) -> T:
+    def __deserialize_dict__(self, cls: Type[supportsDeser]) -> supportsDeser:
         raise NotImplementedError
 
     @abstractmethod
-    def __deserialize_none__(self, cls: Type[T]) -> T:
+    def __deserialize_none__(self, cls: Type[supportsDeser]) -> supportsDeser:
         raise NotImplementedError
