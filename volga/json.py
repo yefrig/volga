@@ -25,6 +25,12 @@ NUMBER_RE = re.compile(
 
 
 class JSON(Format):
+    """hello this a json file
+
+    Args:
+        Format ([type]): [description]
+    """
+
     def __init__(self, input: str) -> None:
         self.s: str = input
         self.idx: int = 0
