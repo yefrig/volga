@@ -4,13 +4,13 @@ from typing import TYPE_CHECKING, Type
 import re
 
 if TYPE_CHECKING:
-    from volga.types import supportsDeser
+    import volga.types as types
 
 from typing import get_type_hints
-from volga.fields import Bool, Float, Int, Null, Str
+import volga.fields as fields
 
 
-from volga.format import Format
+import volga.format as format
 
 RE_FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
@@ -24,7 +24,7 @@ NUMBER_RE = re.compile(
 )
 
 
-class JSON(Format):
+class JSON(format.Format):
     """hello this a json file
 
     Args:
@@ -35,7 +35,7 @@ class JSON(Format):
         self.s: str = input
         self.idx: int = 0
 
-    def parse_bool(self) -> bool:
+    def _parse_bool(self) -> bool:
 
         idx = self.idx
         curr_char = self.s[idx]
@@ -50,7 +50,7 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected bool")
 
-    def parse_float(self) -> float:
+    def _parse_float(self) -> float:
 
         match = NUMBER_RE.match(self.s, self.idx)
 
@@ -63,7 +63,7 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected float")
 
-    def parse_int(self) -> int:
+    def _parse_int(self) -> int:
 
         match = NUMBER_RE.match(self.s, self.idx)
 
@@ -78,7 +78,7 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected int")
 
-    def parse_str(self) -> str:
+    def _parse_str(self) -> str:
 
         if self.s[self.idx] != '"':
             raise RuntimeError("Expected String")
@@ -93,7 +93,7 @@ class JSON(Format):
         self.idx = chunk.end()
         return content
 
-    def parse_none(self) -> None:
+    def _parse_none(self) -> None:
         idx = self.idx
         curr_char = self.s[idx]
 
@@ -103,10 +103,14 @@ class JSON(Format):
         else:
             raise RuntimeError("Expected null")
 
-    def __deserialize_str__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_str__(self.parse_str())
+    def __deserialize_str__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_str__(self._parse_str())
 
-    def __deserialize_dict__(self, constructor: Type[supportsDeser]) -> supportsDeser:
+    def __deserialize_dict__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
 
         res = {}
 
@@ -137,40 +141,57 @@ class JSON(Format):
             print(attrs[key])
             value = self.dispatch(attrs[key])
 
-            res[Str(parsed_key)] = value
+            res[fields.Str(parsed_key)] = value
 
         return constructor.__from_dict__(res)
 
-    def __deserialize_bool__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_bool__(self.parse_bool())
+    def __deserialize_bool__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_bool__(self._parse_bool())
 
-    def __deserialize_int__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_int__(self.parse_int())
+    def __deserialize_int__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_int__(self._parse_int())
 
-    def __deserialize_float__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_float__(self.parse_float())
+    def __deserialize_float__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_float__(self._parse_float())
 
-    def __deserialize_none__(self, constructor: Type[supportsDeser]) -> supportsDeser:
+    def __deserialize_none__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
         # consume null
-        self.parse_none()
+        self._parse_none()
         return constructor.__from_none__(None)
 
-    def dispatch(self, cls: Type[supportsDeser]) -> supportsDeser:
-        if issubclass(cls, Bool):
+    def dispatch(self, cls: Type[types.supportsDeser]) -> types.supportsDeser:
+        if issubclass(cls, fields.Bool):
             return cls(False).__deserialize__(self)
-        elif issubclass(cls, Int):
+        elif issubclass(cls, fields.Int):
             return cls(0).__deserialize__(self)
-        elif issubclass(cls, Float):
+        elif issubclass(cls, fields.Float):
             return cls(0.0).__deserialize__(self)
-        elif issubclass(cls, Str):
+        elif issubclass(cls, fields.Str):
             return cls("").__deserialize__(self)
-        elif issubclass(cls, Null):
+        elif issubclass(cls, fields.Null):
             return cls(None).__deserialize__(self)
         else:
             return cls({}).__deserialize__(self)
 
 
-def deserialize(input: str, cls: Type[supportsDeser]) -> supportsDeser:
+def deserialize(input: str, cls: Type[types.supportsDeser]) -> types.supportsDeser:
+    """Deserialize any valid input into an instance of `cls`.
+
+    Args:
+        input (str): A string composed of the input to be deserialized.
+        cls (Type[types.supportsDeser]): The class from which to create an instance for the deserialized input.
+
+    Returns:
+        types.supportsDeser: An instance of `cls` deserialized from input `input`.
+    """
 
     format = JSON(input)
 

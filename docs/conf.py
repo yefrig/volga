@@ -36,6 +36,11 @@ extensions = [
     "sphinx_autodoc_typehints",
 ]
 
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = True
+
+# set_type_checking_flag = True
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
