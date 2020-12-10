@@ -11,6 +11,7 @@ import volga.fields as fields
 
 
 import volga.format as format
+import volga.exceptions as exceptions
 
 RE_FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
@@ -48,7 +49,7 @@ class JSON(format.Format):
             self.idx += 6
             return False
         else:
-            raise RuntimeError("Expected bool")
+            raise exceptions.ParsingError("Expected bool")
 
     def _parse_float(self) -> float:
 
@@ -61,7 +62,7 @@ class JSON(format.Format):
             self.idx = match.end()
             return n
         else:
-            raise RuntimeError("Expected float")
+            raise exceptions.ParsingError("Expected float")
 
     def _parse_int(self) -> int:
 
@@ -70,24 +71,27 @@ class JSON(format.Format):
         if match:
             integer, frac, exp = match.groups()
             if frac or exp:
-                raise RuntimeError("Expected integer value.")
+                raise exceptions.ParsingError("Expected integer value.")
             else:
                 n = int(integer)
             self.idx = match.end()
             return n
         else:
-            raise RuntimeError("Expected int")
+            raise exceptions.ParsingError("Expected int")
 
     def _parse_str(self) -> str:
 
+        if type(self.s) != str:
+            raise exceptions.ParsingError("Expected String, not " + str(type(self.s)))
+
         if self.s[self.idx] != '"':
-            raise RuntimeError("Expected String")
+            raise exceptions.ParsingError("Expected String")
 
         # skip past first "
         chunk = STRING_RE.match(self.s, self.idx + 1)
 
         if chunk is None:
-            raise RuntimeError("Unterminated string.")
+            raise exceptions.ParsingError("Unterminated string.")
 
         content, _ = chunk.groups()
         self.idx = chunk.end()
@@ -101,7 +105,7 @@ class JSON(format.Format):
             self.idx += 5
             return None
         else:
-            raise RuntimeError("Expected null")
+            raise exceptions.ParsingError("Expected null")
 
     def __deserialize_str__(
         self, constructor: Type[types.supportsDeser]
@@ -115,7 +119,7 @@ class JSON(format.Format):
         res = {}
 
         if self.s[self.idx] != "{":
-            raise RuntimeError("Expected dict")
+            raise exceptions.ParsingError("Expected dict")
 
         # for each attribute in the schema
 
@@ -126,7 +130,7 @@ class JSON(format.Format):
             chunk = STRING_RE.match(self.s, self.idx + 2)
 
             if chunk is None:
-                raise RuntimeError("Expected key string.")
+                raise exceptions.ParsingError("Expected key string.")
 
             parsed_key, _ = chunk.groups()
             self.idx = chunk.end()
@@ -134,7 +138,7 @@ class JSON(format.Format):
             assert parsed_key == key
 
             if self.s[self.idx] != ":":
-                raise RuntimeError("Expected value for key")
+                raise exceptions.ParsingError("Expected value for key")
             self.idx += 1
 
             # parse the value according to schema
