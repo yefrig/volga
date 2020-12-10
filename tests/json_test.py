@@ -8,7 +8,7 @@ from volga.exceptions import ParsingError
 
 
 import json
-import pytest
+import pytest  # type: ignore
 
 
 @given(st.integers())
@@ -39,20 +39,20 @@ def test_serialize_none(x: None):
 
 
 def test_parsing_error_int():
-    with pytest.raises(ParsingError):
+    with pytest.raises(ParsingError):  # type: ignore
         deserialize("Not an int", Int)
 
 
 def test_parsing_error_bool():
-    with pytest.raises(ParsingError):
+    with pytest.raises(ParsingError):  # type: ignore
         deserialize("Not a bool", Bool)
 
 
 def test_parsing_error_float():
-    with pytest.raises(ParsingError):
+    with pytest.raises(ParsingError):  # type: ignore
         deserialize("Not a float", Float)
 
 
 def test_parsing_error_str():
-    with pytest.raises(ParsingError):
-        deserialize(0, Str)
+    with pytest.raises(ParsingError):  # type: ignore
+        deserialize(0, Str)  # type: ignore

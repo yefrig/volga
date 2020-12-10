@@ -16,7 +16,17 @@ from _pytest.outcomes import exit, fail, importorskip, skip, xfail
 from _pytest.python import Class, Function, Instance, Module, Package
 from _pytest.python_api import approx, raises
 from _pytest.recwarn import deprecated_call, warns
-from _pytest.warning_types import PytestAssertRewriteWarning, PytestCacheWarning, PytestCollectionWarning, PytestConfigWarning, PytestDeprecationWarning, PytestExperimentalApiWarning, PytestUnhandledCoroutineWarning, PytestUnknownMarkWarning, PytestWarning
+from _pytest.warning_types import (
+    PytestAssertRewriteWarning,
+    PytestCacheWarning,
+    PytestCollectionWarning,
+    PytestConfigWarning,
+    PytestDeprecationWarning,
+    PytestExperimentalApiWarning,
+    PytestUnhandledCoroutineWarning,
+    PytestUnknownMarkWarning,
+    PytestWarning,
+)
 
 """
 pytest: unit and functional testing with Python.
