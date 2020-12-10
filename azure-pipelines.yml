@@ -18,7 +18,7 @@ steps:
   - script: poetry install -v
     displayName: 'Install dependencies'
   
-  - script: npm install -g pyright
+  - script: npm install -g pyright@1.1.86
     displayName: 'Install pyright'
 
   - script: make lint
