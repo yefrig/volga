@@ -4,9 +4,11 @@ import hypothesis.strategies as st
 from hypothesis import given
 from volga.fields import Int, Bool, Float, Null, Str
 from volga.json import deserialize
+from volga.exceptions import ParsingError
 
 
 import json
+import pytest
 
 
 @given(st.integers())
@@ -36,24 +38,21 @@ def test_serialize_none(x: None):
     assert deserialize(json.dumps(x), Null) == None
 
 
-# class User(Schema):
-#     # name: Str
-#     age: Int
-#     score: Float
-#     verified: Bool
+def test_parsing_error_int():
+    with pytest.raises(ParsingError):
+        deserialize("Not an int", Int)
 
 
-# @given(
-#     a=st.integers(), s=st.floats(allow_infinity=False, allow_nan=False), v=st.booleans()
-# )
-# def test_deserialize_user(a: int, s: float, v: bool):
-#     userJSON = (
-#         '{"age":'
-#         + json.dumps(a)
-#         + ',"score":'
-#         + json.dumps(s)
-#         + ',"verified":'
-#         + json.dumps(v)
-#         + "}"
-#     )
-#     assert deserialize(userJSON, User) == User(age=a, score=s, verified=v)
+def test_parsing_error_bool():
+    with pytest.raises(ParsingError):
+        deserialize("Not a bool", Bool)
+
+
+def test_parsing_error_float():
+    with pytest.raises(ParsingError):
+        deserialize("Not a float", Float)
+
+
+def test_parsing_error_str():
+    with pytest.raises(ParsingError):
+        deserialize(0, Str)
