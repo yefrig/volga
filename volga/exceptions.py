@@ -4,7 +4,7 @@ class VolgaError(Exception):
     pass
 
 
-class SerializationError(VolgaError):
+class DeserializationError(VolgaError):
     """Raised during serialization errors when parsing or building object instances."""
 
     pass
