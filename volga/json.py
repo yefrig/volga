@@ -4,14 +4,14 @@ from typing import TYPE_CHECKING, Type
 import re
 
 if TYPE_CHECKING:
-    from volga.types import supportsDeser
+    import volga.types as types
 
 from typing import get_type_hints
-from volga.fields import Bool, Float, Int, Null, Str
+import volga.fields as fields
 
 
-from volga.format import Format
-from volga.exceptions import ParsingError
+import volga.format as format
+import volga.exceptions as exceptions
 
 RE_FLAGS = re.VERBOSE | re.MULTILINE | re.DOTALL
 
@@ -25,12 +25,18 @@ NUMBER_RE = re.compile(
 )
 
 
-class JSON(Format):
+class JSON(format.Format):
+    """hello this a json file
+
+    Args:
+        Format ([type]): [description]
+    """
+
     def __init__(self, input: str) -> None:
         self.s: str = input
         self.idx: int = 0
 
-    def parse_bool(self) -> bool:
+    def _parse_bool(self) -> bool:
 
         idx = self.idx
         curr_char = self.s[idx]
@@ -43,9 +49,9 @@ class JSON(Format):
             self.idx += 6
             return False
         else:
-            raise ParsingError("Expected bool")
+            raise exceptions.ParsingError("Expected bool")
 
-    def parse_float(self) -> float:
+    def _parse_float(self) -> float:
 
         match = NUMBER_RE.match(self.s, self.idx)
 
@@ -56,42 +62,42 @@ class JSON(Format):
             self.idx = match.end()
             return n
         else:
-            raise ParsingError("Expected float")
+            raise exceptions.ParsingError("Expected float")
 
-    def parse_int(self) -> int:
+    def _parse_int(self) -> int:
 
         match = NUMBER_RE.match(self.s, self.idx)
 
         if match:
             integer, frac, exp = match.groups()
             if frac or exp:
-                raise ParsingError("Expected integer value.")
+                raise exceptions.ParsingError("Expected integer value.")
             else:
                 n = int(integer)
             self.idx = match.end()
             return n
         else:
-            raise ParsingError("Expected int")
+            raise exceptions.ParsingError("Expected int")
 
-    def parse_str(self) -> str:
+    def _parse_str(self) -> str:
 
         if type(self.s) != str:
-            raise ParsingError("Expected String, not " + str(type(self.s)))
+            raise exceptions.ParsingError("Expected String, not " + str(type(self.s)))
 
         if self.s[self.idx] != '"':
-            raise ParsingError("Expected String")
+            raise exceptions.ParsingError("Expected String")
 
         # skip past first "
         chunk = STRING_RE.match(self.s, self.idx + 1)
 
         if chunk is None:
-            raise ParsingError("Unterminated string.")
+            raise exceptions.ParsingError("Unterminated string.")
 
         content, _ = chunk.groups()
         self.idx = chunk.end()
         return content
 
-    def parse_none(self) -> None:
+    def _parse_none(self) -> None:
         idx = self.idx
         curr_char = self.s[idx]
 
@@ -99,17 +105,21 @@ class JSON(Format):
             self.idx += 5
             return None
         else:
-            raise ParsingError("Expected null")
+            raise exceptions.ParsingError("Expected null")
 
-    def __deserialize_str__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_str__(self.parse_str())
+    def __deserialize_str__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_str__(self._parse_str())
 
-    def __deserialize_dict__(self, constructor: Type[supportsDeser]) -> supportsDeser:
+    def __deserialize_dict__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
 
         res = {}
 
         if self.s[self.idx] != "{":
-            raise ParsingError("Expected dict")
+            raise exceptions.ParsingError("Expected dict")
 
         # for each attribute in the schema
 
@@ -120,7 +130,7 @@ class JSON(Format):
             chunk = STRING_RE.match(self.s, self.idx + 2)
 
             if chunk is None:
-                raise ParsingError("Expected key string.")
+                raise exceptions.ParsingError("Expected key string.")
 
             parsed_key, _ = chunk.groups()
             self.idx = chunk.end()
@@ -128,47 +138,64 @@ class JSON(Format):
             assert parsed_key == key
 
             if self.s[self.idx] != ":":
-                raise ParsingError("Expected value for key")
+                raise exceptions.ParsingError("Expected value for key")
             self.idx += 1
 
             # parse the value according to schema
             print(attrs[key])
             value = self.dispatch(attrs[key])
 
-            res[Str(parsed_key)] = value
+            res[fields.Str(parsed_key)] = value
 
         return constructor.__from_dict__(res)
 
-    def __deserialize_bool__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_bool__(self.parse_bool())
+    def __deserialize_bool__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_bool__(self._parse_bool())
 
-    def __deserialize_int__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_int__(self.parse_int())
+    def __deserialize_int__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_int__(self._parse_int())
 
-    def __deserialize_float__(self, constructor: Type[supportsDeser]) -> supportsDeser:
-        return constructor.__from_float__(self.parse_float())
+    def __deserialize_float__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
+        return constructor.__from_float__(self._parse_float())
 
-    def __deserialize_none__(self, constructor: Type[supportsDeser]) -> supportsDeser:
+    def __deserialize_none__(
+        self, constructor: Type[types.supportsDeser]
+    ) -> types.supportsDeser:
         # consume null
-        self.parse_none()
+        self._parse_none()
         return constructor.__from_none__(None)
 
-    def dispatch(self, cls: Type[supportsDeser]) -> supportsDeser:
-        if issubclass(cls, Bool):
+    def dispatch(self, cls: Type[types.supportsDeser]) -> types.supportsDeser:
+        if issubclass(cls, fields.Bool):
             return cls(False).__deserialize__(self)
-        elif issubclass(cls, Int):
+        elif issubclass(cls, fields.Int):
             return cls(0).__deserialize__(self)
-        elif issubclass(cls, Float):
+        elif issubclass(cls, fields.Float):
             return cls(0.0).__deserialize__(self)
-        elif issubclass(cls, Str):
+        elif issubclass(cls, fields.Str):
             return cls("").__deserialize__(self)
-        elif issubclass(cls, Null):
+        elif issubclass(cls, fields.Null):
             return cls(None).__deserialize__(self)
         else:
             return cls({}).__deserialize__(self)
 
 
-def deserialize(input: str, cls: Type[supportsDeser]) -> supportsDeser:
+def deserialize(input: str, cls: Type[types.supportsDeser]) -> types.supportsDeser:
+    """Deserialize any valid input into an instance of `cls`.
+
+    Args:
+        input (str): A string composed of the input to be deserialized.
+        cls (Type[types.supportsDeser]): The class from which to create an instance for the deserialized input.
+
+    Returns:
+        types.supportsDeser: An instance of `cls` deserialized from input `input`.
+    """
 
     format = JSON(input)
 
