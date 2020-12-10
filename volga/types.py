@@ -5,7 +5,7 @@ from typing import Protocol, TYPE_CHECKING, Type, Any
 
 
 if TYPE_CHECKING:
-    from volga.format import Format
+    import volga.format as format
 
 
 class supportsDeser(Protocol):
@@ -16,7 +16,7 @@ class supportsDeser(Protocol):
         ...
 
     @abstractmethod
-    def __deserialize__(self, format: Format) -> supportsDeser:
+    def __deserialize__(self, format: format.Format) -> supportsDeser:
         raise NotImplementedError
 
     @classmethod

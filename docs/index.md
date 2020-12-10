@@ -1,31 +1,44 @@
-Welcome to volga's documentation!
+Welcome to volga's documentation
 =================================
+The volga API reference section is currently a work in progress, please have patience as we fill in and improve the documentation.
 
-[![Build Status]][build] [![Azure DevOps coverage]][Azure coverage url] [![license]][license-file] [![release]][releases] [![python-version]][pypi]
 
-[Build Status]: https://dev.azure.com/yefrigaitan/volga/_apis/build/status/yefrig.volga?branchName=main
-[build]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
 
-[Azure DevOps coverage]: https://img.shields.io/azure-devops/coverage/yefrigaitan/volga/1
-[Azure coverage url]: https://dev.azure.com/yefrigaitan/volga/_build/latest?definitionId=1&branchName=main
 
-[license]: https://img.shields.io/github/license/yefrig/volga
-[license-file]: https://github.com/yefrig/volga/blob/main/LICENSE
+volga Modules
+=============
 
-[release]: https://img.shields.io/github/v/release/yefrig/volga?include_prereleases&sort=semver
-[releases]: https://github.com/yefrig/volga/releases
+.. contents:: Table of Contents
+    :depth: 3
+    :local:
 
-[python-version]: https://img.shields.io/pypi/pyversions/volga
-[pypi]: https://pypi.org/project/volga/
+volga.fields module
+-------------------
 
-## What is volga?
-**volga** provides fast, extensible, and expressive APIs
-to deserialize any python data structure from any supported data format
-(such as JSON and YAML). Volga allows full customization of the deserialization 
-behavior of your data structures resulting in schema-tized, validated, type-checked 
-objects.
+.. automodule:: volga.fields
+    :members:
 
-```eval_rst
-.. note::
-    This documentation is not complete yet. Full documentation will be available soon.
-```
+volga.format module
+-------------------
+
+.. automodule:: volga.format
+    :members:
+
+volga.json module
+-----------------
+
+.. automodule:: volga.json
+    :members:
+
+volga.schema module
+-------------------
+
+.. automodule:: volga.schema
+    :members:
+
+volga.types module
+------------------
+
+.. automodule:: volga.types
+    :members:
+
