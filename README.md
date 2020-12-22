@@ -67,3 +67,39 @@ pip install volga
 - Yefri Gaitan [@yefrig](https://github.com/yefrig)
 
 - Ecenaz (Jen) Ozmen [@eozmen410](https://github.com/eozmen410)
+
+
+## Code Organization
+
+```
+.
+├── LICENSE                 
+├── Makefile
+├── README.md
+├── azure-pipelines.yml
+├── docs                    # readthedocs config and reqs
+│   ├── Makefile
+│   ├── conf.py
+│   ├── index.md
+│   ├── make.bat
+│   └── requirements.txt
+├── poetry.lock
+├── pyproject.toml          # project configs
+├── pyrightconfig.json      # pyright configs
+├── tests
+│   ├── fields_test.py
+│   ├── json_test.py
+│   ├── schema_test.py
+│   └── test_test.py
+├── typings                 # pyright stubs
+│   └── pytest
+│       ├── __init__.pyi
+│       └── __main__.pyi
+└── volga
+    ├── exceptions.py       # module for volga error classes
+    ├── fields.py           # posible field types for data structures
+    ├── format.py           # API/protocols for data formats
+    ├── json.py             # a JSON data format implementation
+    ├── schema.py           # the schema protocol for data structures
+    └── types.py            # API/protocols for deserializable data structures
+```
