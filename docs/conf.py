@@ -33,7 +33,7 @@ master_doc = "index"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinxcontrib.napoleon",
-    "sphinx_autodoc_typehints",
+    # "sphinx_autodoc_typehints",
 ]
 
 napoleon_include_private_with_doc = False
